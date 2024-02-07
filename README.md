@@ -29,12 +29,12 @@ cd TourneyCraft
 flutter pub get
 ```
 
-3.Add Firebase configuration files:
+3. Add Firebase configuration files:
 
 Download the google-services.json and GoogleService-Info.plist files from the Firebase console.
 Place the files in the android/app directory (for Android) and ios/Runner directory (for iOS).
 
-3.Run the app:
+4. Run the app:
 ```bash
 flutter run
 ```

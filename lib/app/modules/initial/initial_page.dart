@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 
 import '../../shared/components/base_app_bar.dart';
 
@@ -14,9 +13,6 @@ class _InitialPageState extends State<InitialPage> {
   @override
   void initState() {
     super.initState();
-    SystemChrome.setEnabledSystemUIMode(
-      SystemUiMode.leanBack,
-    );
   }
 
   @override
@@ -24,7 +20,7 @@ class _InitialPageState extends State<InitialPage> {
     final sizeOf = MediaQuery.of(context).size;
 
     return Scaffold(
-      appBar: const BaseAppBar(),
+      appBar: const BaseAppBar(showCenterIcons: false),
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.start,

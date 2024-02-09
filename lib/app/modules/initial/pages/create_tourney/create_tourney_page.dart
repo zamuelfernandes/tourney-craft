@@ -1,18 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import '../../shared/components/base_app_bar.dart';
-import 'cubit/base_cubit.dart';
-import 'cubit/base_state.dart';
+import '../../../../shared/components/base_app_bar.dart';
+import 'cubit/create_tourney_cubit.dart';
+import 'cubit/create_tourney_state.dart';
 
-class BasePage extends StatefulWidget {
-  const BasePage({super.key});
+class CreateTourneyPage extends StatefulWidget {
+  const CreateTourneyPage({super.key});
 
   @override
-  _BasePageState createState() => _BasePageState();
+  _CreateTourneyPageState createState() => _CreateTourneyPageState();
 }
 
-class _BasePageState extends State<BasePage> {
-  late BaseCubit _cubit;
+class _CreateTourneyPageState extends State<CreateTourneyPage> {
+  late CreateTourneyCubit _cubit;
 
   @override
   void dispose() {
@@ -22,15 +22,15 @@ class _BasePageState extends State<BasePage> {
 
   @override
   void initState() {
-    _cubit = BaseCubit()..fetchData();
+    _cubit = CreateTourneyCubit()..fetchData();
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: BaseAppBar(),
-      body: BlocConsumer<BaseCubit, BaseState>(
+      appBar: const BaseAppBar(),
+      body: BlocConsumer<CreateTourneyCubit, CreateTourneyState>(
         bloc: _cubit,
         listener: (context, state) {
           if (state.isSuccess) {

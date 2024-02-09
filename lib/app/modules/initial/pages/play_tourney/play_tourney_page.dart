@@ -1,18 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import '../../shared/components/base_app_bar.dart';
-import 'cubit/base_cubit.dart';
-import 'cubit/base_state.dart';
+import '../../../../shared/components/base_app_bar.dart';
+import 'cubit/play_tourney_cubit.dart';
+import 'cubit/play_tourney_state.dart';
 
-class BasePage extends StatefulWidget {
-  const BasePage({super.key});
+class PlayTourneyPage extends StatefulWidget {
+  const PlayTourneyPage({super.key});
 
   @override
-  _BasePageState createState() => _BasePageState();
+  _PlayTourneyPageState createState() => _PlayTourneyPageState();
 }
 
-class _BasePageState extends State<BasePage> {
-  late BaseCubit _cubit;
+class _PlayTourneyPageState extends State<PlayTourneyPage> {
+  late PlayTourneyCubit _cubit;
 
   @override
   void dispose() {
@@ -22,7 +22,7 @@ class _BasePageState extends State<BasePage> {
 
   @override
   void initState() {
-    _cubit = BaseCubit()..fetchData();
+    _cubit = PlayTourneyCubit()..fetchData();
     super.initState();
   }
 
@@ -30,7 +30,7 @@ class _BasePageState extends State<BasePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: BaseAppBar(),
-      body: BlocConsumer<BaseCubit, BaseState>(
+      body: BlocConsumer<PlayTourneyCubit, PlayTourneyState>(
         bloc: _cubit,
         listener: (context, state) {
           if (state.isSuccess) {

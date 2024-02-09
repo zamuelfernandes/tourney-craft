@@ -6,18 +6,28 @@ class BaseAppBar extends StatelessWidget implements PreferredSizeWidget {
   final Widget? leading;
   final List<Widget>? actions;
   final bool showCenterIcons;
+  final String title;
 
   const BaseAppBar({
     super.key,
     this.leading,
     this.actions,
     this.showCenterIcons = true,
+    this.title = '',
   });
 
   @override
   Widget build(BuildContext context) {
     return AppBar(
       backgroundColor: AppColors.darkPrimary,
+      foregroundColor: AppColors.white,
+      title: showCenterIcons
+          ? const SizedBox()
+          : Text(
+              title.toUpperCase(),
+              style: AppTextStyle.titleSmallStyle,
+            ),
+      centerTitle: true,
       leading: leading,
       actions: actions,
       flexibleSpace: Container(
@@ -26,21 +36,21 @@ class BaseAppBar extends StatelessWidget implements PreferredSizeWidget {
           color: AppColors.darkPrimary,
           boxShadow: [
             BoxShadow(
-              color: Colors.black.withOpacity(0.35),
+              color: AppColors.black.withOpacity(0.35),
               blurRadius: 5,
               offset: const Offset(0, 1),
             ),
           ],
         ),
-        child: showCenterIcons
-            ? Padding(
-                padding: const EdgeInsets.only(top: 8),
-                child: Image.asset(
+        child: Padding(
+          padding: EdgeInsets.only(top: showCenterIcons ? 8 : 25),
+          child: showCenterIcons
+              ? Image.asset(
                   'assets/images/tatu_head.png',
                   width: MediaQuery.sizeOf(context).width * 0.45,
-                ),
-              )
-            : const SizedBox(),
+                )
+              : const SizedBox(),
+        ),
       ),
     );
   }

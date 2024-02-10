@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "614519166179",
+    "project_id": "tourney-craft",
+    "storage_bucket": "tourney-craft.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:614519166179:android:79062a6ad7cf115be661d6",
+        "android_client_info": {
+          "package_name": "br.com.zamuelfernandes.tourney_craft"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBHfRinDGUaz24SW8Zp0IOw36U1_JxcjHk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

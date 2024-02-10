@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 
 import '../../shared/components/base_app_bar.dart';
+import '../../shared/themes/themes.dart';
 import 'pages/create_tourney.dart';
 import 'pages/play_tourney.dart';
+import 'pages/ready_page.dart';
 
 class InitialPage extends StatefulWidget {
   const InitialPage({super.key});
@@ -22,6 +24,7 @@ class _InitialPageState extends State<InitialPage> {
     final sizeOf = MediaQuery.of(context).size;
 
     return Scaffold(
+      backgroundColor: Colors.white,
       appBar: const BaseAppBar(showCenterIcons: false),
       body: Center(
         child: Column(
@@ -65,7 +68,7 @@ class _InitialPageState extends State<InitialPage> {
                   child: Padding(
                     padding: const EdgeInsets.all(12),
                     child: Text(
-                      'Entrar no Torneio'.toUpperCase(),
+                      'Cadastrar no Torneio'.toUpperCase(),
                       textAlign: TextAlign.center,
                     ),
                   ),
@@ -88,6 +91,23 @@ class _InitialPageState extends State<InitialPage> {
                     padding: const EdgeInsets.all(12),
                     child: Text('Criar Torneio'.toUpperCase()),
                   ),
+                ),
+              ),
+            ),
+            const SizedBox(height: 80),
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).push(MaterialPageRoute(
+                  builder: (context) => const ReadyPage(),
+                ));
+              },
+              child: Text(
+                'Já estou em um torneio',
+                style: AppTextStyle.subtitleStyle.copyWith(
+                  fontSize: 14,
+                  color: AppColors.darkPrimary,
+                  fontWeight: FontWeight.normal,
+                  decoration: TextDecoration.underline,
                 ),
               ),
             ),

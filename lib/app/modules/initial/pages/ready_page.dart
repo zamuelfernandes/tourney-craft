@@ -3,23 +3,19 @@ import 'package:validatorless/validatorless.dart';
 
 import '../../../shared/components/base_app_bar.dart';
 
-class PlayTourneyPage extends StatefulWidget {
-  const PlayTourneyPage({super.key});
+class ReadyPage extends StatefulWidget {
+  const ReadyPage({super.key});
 
   @override
-  State<PlayTourneyPage> createState() => _PlayTourneyPageState();
+  State<ReadyPage> createState() => _ReadyPageState();
 }
 
-class _PlayTourneyPageState extends State<PlayTourneyPage> {
+class _ReadyPageState extends State<ReadyPage> {
   final formKey = GlobalKey<FormState>();
-  final playerNameEC = TextEditingController();
-  final teamEC = TextEditingController();
   final tourneyCodeEC = TextEditingController();
 
   @override
   void dispose() {
-    playerNameEC.dispose();
-    teamEC.dispose();
     tourneyCodeEC.dispose();
     super.dispose();
   }
@@ -27,9 +23,10 @@ class _PlayTourneyPageState extends State<PlayTourneyPage> {
   @override
   Widget build(BuildContext context) {
     final sizeOf = MediaQuery.sizeOf(context);
+
     return Scaffold(
       appBar: const BaseAppBar(
-        title: 'Fazer Cadastro',
+        title: 'Entrar no Torneio',
         showCenterIcons: false,
       ),
       body: SingleChildScrollView(
@@ -73,26 +70,6 @@ class _PlayTourneyPageState extends State<PlayTourneyPage> {
                         ),
                       ),
                     ),
-                    TextFormField(
-                      controller: playerNameEC,
-                      validator: Validatorless.required('Campo obrigatório'),
-                      // Validatorless.multiple([
-                      //   Validatorless.required('E-mail obrigatório'),
-                      //   Validatorless.email('E-mail inválido'),
-                      // ]),
-                      decoration: InputDecoration(
-                        label: Text('Nome do Jogador:'.toUpperCase()),
-                      ),
-                    ),
-                    const SizedBox(height: 25),
-                    TextFormField(
-                      controller: teamEC,
-                      validator: Validatorless.required('Campo obrigatório'),
-                      decoration: InputDecoration(
-                        label: Text('Nome do Time:'.toUpperCase()),
-                      ),
-                      keyboardType: TextInputType.number,
-                    ),
                     const SizedBox(height: 25),
                     TextFormField(
                       controller: tourneyCodeEC,
@@ -102,9 +79,9 @@ class _PlayTourneyPageState extends State<PlayTourneyPage> {
                       ),
                       keyboardType: TextInputType.number,
                     ),
-                    const SizedBox(height: 40),
+                    const SizedBox(height: 80),
                     Hero(
-                      tag: 'playTourney',
+                      tag: 'Ready',
                       child: SizedBox(
                         width: sizeOf.width * .55,
                         height: sizeOf.height * .08,
@@ -114,8 +91,6 @@ class _PlayTourneyPageState extends State<PlayTourneyPage> {
                                 formKey.currentState?.validate() ?? false;
 
                             if (valid) {
-                              print('Nome do Jogador: ${playerNameEC.text}');
-                              print('Nome do Time: ${teamEC.text}');
                               print('Código do Torneio: ${tourneyCodeEC.text}');
                               print('...CADASTRAR PLAYER...');
                             }
@@ -123,7 +98,7 @@ class _PlayTourneyPageState extends State<PlayTourneyPage> {
                           child: Padding(
                             padding: const EdgeInsets.all(12),
                             child: Text(
-                              'Cadastrar'.toUpperCase(),
+                              'Entrar'.toUpperCase(),
                               textAlign: TextAlign.center,
                             ),
                           ),

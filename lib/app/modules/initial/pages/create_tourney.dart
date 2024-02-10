@@ -38,35 +38,38 @@ class _CreateTourneyPageState extends State<CreateTourneyPage> {
           child: Align(
             alignment: Alignment.topCenter,
             child: Container(
-              constraints: BoxConstraints(maxWidth: sizeOf.width * .75),
+              constraints: BoxConstraints(maxWidth: sizeOf.width * .8),
               child: Form(
                 key: formKey,
                 child: Column(
                   children: [
-                    SizedBox(height: sizeOf.height * .06),
-                    Hero(
-                      tag: 'logo',
-                      child: Card(
-                        elevation: 15,
-                        surfaceTintColor: Colors.white,
-                        color: Colors.white,
-                        shape: const CircleBorder(),
-                        child: Padding(
-                          padding: const EdgeInsets.all(25),
-                          child: ClipRRect(
-                            borderRadius: BorderRadius.circular(100),
-                            child: SizedBox(
-                              width: sizeOf.width * .35,
-                              child: Image.asset(
-                                'assets/icon/logo.png',
-                                fit: BoxFit.cover,
+                    Padding(
+                      padding: EdgeInsets.symmetric(
+                        vertical: sizeOf.height * .06,
+                      ),
+                      child: Hero(
+                        tag: 'logo',
+                        child: Card(
+                          elevation: 15,
+                          surfaceTintColor: Colors.white,
+                          color: Colors.white,
+                          shape: const CircleBorder(),
+                          child: Padding(
+                            padding: const EdgeInsets.all(25),
+                            child: ClipRRect(
+                              borderRadius: BorderRadius.circular(100),
+                              child: SizedBox(
+                                width: sizeOf.width * .35,
+                                child: Image.asset(
+                                  'assets/icon/logo.png',
+                                  fit: BoxFit.cover,
+                                ),
                               ),
                             ),
                           ),
                         ),
                       ),
                     ),
-                    SizedBox(height: sizeOf.height * .08),
                     TextFormField(
                       controller: tourneyNameEC,
                       validator: Validatorless.required('Campo obrigatório'),
@@ -78,7 +81,7 @@ class _CreateTourneyPageState extends State<CreateTourneyPage> {
                         label: Text('Nome do Torneio:'.toUpperCase()),
                       ),
                     ),
-                    const SizedBox(height: 24),
+                    const SizedBox(height: 25),
                     TextFormField(
                       controller: playersNumberEC,
                       validator: Validatorless.required('Campo obrigatório'),
@@ -87,7 +90,7 @@ class _CreateTourneyPageState extends State<CreateTourneyPage> {
                       ),
                       keyboardType: TextInputType.number,
                     ),
-                    const SizedBox(height: 35),
+                    const SizedBox(height: 40),
                     Hero(
                       tag: 'createTourney',
                       child: SizedBox(
@@ -104,9 +107,9 @@ class _CreateTourneyPageState extends State<CreateTourneyPage> {
                               print('...CRIAR TORNEIO...');
                             }
                           },
-                          child: const Padding(
-                            padding: EdgeInsets.all(12),
-                            child: Text('CRIAR TORNEIO'),
+                          child: Padding(
+                            padding: const EdgeInsets.all(12),
+                            child: Text('Criar'.toUpperCase()),
                           ),
                         ),
                       ),

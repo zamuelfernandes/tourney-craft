@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:tourney_craft/app/modules/initial/cubit/initial_cubit.dart';
 
 import '../../shared/components/base_app_bar.dart';
 import '../../shared/themes/themes.dart';
@@ -14,9 +15,17 @@ class InitialPage extends StatefulWidget {
 }
 
 class _InitialPageState extends State<InitialPage> {
+  late InitialCubit _cubit;
   @override
   void initState() {
+    _cubit = InitialCubit();
     super.initState();
+  }
+
+  @override
+  void dispose() {
+    _cubit.close();
+    super.dispose();
   }
 
   @override
@@ -84,7 +93,9 @@ class _InitialPageState extends State<InitialPage> {
                 child: ElevatedButton(
                   onPressed: () {
                     Navigator.of(context).push(MaterialPageRoute(
-                      builder: (context) => const CreateTourneyPage(),
+                      builder: (context) => CreateTourneyPage(
+                        cubit: _cubit,
+                      ),
                     ));
                   },
                   child: Padding(

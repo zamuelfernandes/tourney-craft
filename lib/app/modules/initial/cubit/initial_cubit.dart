@@ -1,9 +1,11 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
+import '../../../shared/services/firestore.dart';
 import 'initial_state.dart';
 
 class InitialCubit extends Cubit<InitialState> {
   InitialCubit() : super(const InitialState());
   List<String> data = ['Ok'];
+  final FirestoreService _firestoreService = FirestoreService();
 
   void fetchData() async {
     emit(state.copyWith(isLoading: true));
@@ -28,5 +30,17 @@ class InitialCubit extends Cubit<InitialState> {
             ))
           : null;
     }
+  }
+
+  Future<String> createTourney({
+    required String tourneyName,
+    required int playersNumber,
+  }) async {
+    final result = await _firestoreService.createTourney(
+      tourneyName: tourneyName,
+      playersNumber: playersNumber,
+    );
+
+    return result;
   }
 }

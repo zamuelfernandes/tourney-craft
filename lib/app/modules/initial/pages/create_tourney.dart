@@ -1,9 +1,16 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:tourney_craft/app/modules/initial/cubit/initial_cubit.dart';
 import 'package:tourney_craft/app/shared/components/base_app_bar.dart';
+import 'package:tourney_craft/app/shared/components/base_bottom_message.dart';
 import 'package:validatorless/validatorless.dart';
 
 class CreateTourneyPage extends StatefulWidget {
-  const CreateTourneyPage({super.key});
+  final InitialCubit cubit;
+  const CreateTourneyPage({
+    super.key,
+    required this.cubit,
+  });
 
   @override
   State<CreateTourneyPage> createState() => _CreateTourneyPageState();
@@ -89,6 +96,9 @@ class _CreateTourneyPageState extends State<CreateTourneyPage> {
                         label: Text('Número de Jogadores:'.toUpperCase()),
                       ),
                       keyboardType: TextInputType.number,
+                      inputFormatters: <TextInputFormatter>[
+                        FilteringTextInputFormatter.digitsOnly,
+                      ],
                     ),
                     const SizedBox(height: 40),
                     Hero(
@@ -97,7 +107,7 @@ class _CreateTourneyPageState extends State<CreateTourneyPage> {
                         width: sizeOf.width * .55,
                         height: sizeOf.height * .08,
                         child: ElevatedButton(
-                          onPressed: () {
+                          onPressed: () async {
                             final valid =
                                 formKey.currentState?.validate() ?? false;
 
@@ -105,6 +115,19 @@ class _CreateTourneyPageState extends State<CreateTourneyPage> {
                               print('Torneio: ${tourneyNameEC.text}');
                               print('Jogadores: ${playersNumberEC.text}');
                               print('...CRIAR TORNEIO...');
+
+                              final result = await widget.cubit.createTourney(
+                                tourneyName: tourneyNameEC.text,
+                                playersNumber: int.parse(playersNumberEC.text),
+                              );
+
+                              BaseBottomMessage.showMessage(
+                                context,
+                                result,
+                                Colors.green,
+                              );
+
+                              Navigator.pop(context);
                             }
                           },
                           child: Padding(

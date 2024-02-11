@@ -9,6 +9,7 @@ class FirestoreService {
   Future<String> createTourney({
     required String tourneyName,
     required int playersNumber,
+    required int tourneyCode,
   }) async {
     bool hasError = true;
     try {
@@ -16,6 +17,7 @@ class FirestoreService {
         {
           'tourneyName': tourneyName,
           'playersNumber': playersNumber,
+          'tourneyCode': tourneyCode,
           'timestamp': FieldValue.serverTimestamp(),
         },
       ).whenComplete(() {
@@ -88,4 +90,15 @@ class FirestoreService {
   }
 
   //DELETE TOURNEY
+
+  //AUXILIARY METHODS
+  Future<bool> doesIdExist({required String documentId}) async {
+    try {
+      final docSnapshot = await _tourneyCollection.doc(documentId).get();
+      return docSnapshot.exists;
+    } catch (e) {
+      print('Erro ao verificar a existência do ID: $e');
+      return false;
+    }
+  }
 }

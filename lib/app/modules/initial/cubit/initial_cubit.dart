@@ -35,10 +35,12 @@ class InitialCubit extends Cubit<InitialState> {
   Future<String> createTourney({
     required String tourneyName,
     required int playersNumber,
+    required int tourneyCode,
   }) async {
     final result = await _firestoreService.createTourney(
       tourneyName: tourneyName,
       playersNumber: playersNumber,
+      tourneyCode: tourneyCode,
     );
 
     return result;
@@ -63,15 +65,19 @@ class InitialCubit extends Cubit<InitialState> {
 
     int playersQuant = tourney['playersNumber'];
 
-    if (tourney['players'] == null ||
-        tourney['players'].length < playersQuant) {
-      final result = await _firestoreService.putPlayerInTourney(
-        playerName: playerName,
-        teamName: teamName,
-        tourneyId: tourneyId,
-      );
+    if (await _firestoreService.doesIdExist(documentId: tourneyId)) {
+      if (tourney['players'] == null ||
+          tourney['players'].length < playersQuant) {
+        final result = await _firestoreService.putPlayerInTourney(
+          playerName: playerName,
+          teamName: teamName,
+          tourneyId: tourneyId,
+        );
 
-      return result;
+        return result;
+      }
+    } else {
+      return 'Torneio não encontrado!';
     }
 
     return 'Torneio lotado!';

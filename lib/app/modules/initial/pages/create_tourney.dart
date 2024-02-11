@@ -21,11 +21,13 @@ class _CreateTourneyPageState extends State<CreateTourneyPage> {
   final formKey = GlobalKey<FormState>();
   final tourneyNameEC = TextEditingController();
   final playersNumberEC = TextEditingController();
+  final tourneyCodeEC = TextEditingController();
 
   @override
   void dispose() {
     tourneyNameEC.dispose();
     playersNumberEC.dispose();
+    tourneyCodeEC.dispose();
     super.dispose();
   }
 
@@ -101,6 +103,19 @@ class _CreateTourneyPageState extends State<CreateTourneyPage> {
                         FilteringTextInputFormatter.digitsOnly,
                       ],
                     ),
+                    const SizedBox(height: 25),
+                    TextFormField(
+                      controller: tourneyCodeEC,
+                      validator: Validatorless.required('Campo obrigatório'),
+                      maxLength: 6,
+                      decoration: InputDecoration(
+                        label: Text('Código para o Torneio:'.toUpperCase()),
+                      ),
+                      keyboardType: TextInputType.number,
+                      inputFormatters: <TextInputFormatter>[
+                        FilteringTextInputFormatter.digitsOnly,
+                      ],
+                    ),
                     const SizedBox(height: 40),
                     Hero(
                       tag: 'createTourney',
@@ -115,20 +130,33 @@ class _CreateTourneyPageState extends State<CreateTourneyPage> {
                             if (valid) {
                               print('Torneio: ${tourneyNameEC.text}');
                               print('Jogadores: ${playersNumberEC.text}');
+                              print('Código: ${tourneyCodeEC.text}');
                               print('...CRIAR TORNEIO...');
+                              String result = '';
 
-                              final result = await widget.cubit.createTourney(
-                                tourneyName: tourneyNameEC.text,
-                                playersNumber: int.parse(playersNumberEC.text),
-                              );
+                              if (int.parse(playersNumberEC.text) < 8) {
+                                BaseBottomMessage.showMessage(
+                                  context,
+                                  'O número mínimo de jogadores é 8!',
+                                  AppColors.secondaryBlack,
+                                );
+                                return;
+                              } else {
+                                result = await widget.cubit.createTourney(
+                                  tourneyName: tourneyNameEC.text,
+                                  playersNumber:
+                                      int.parse(playersNumberEC.text),
+                                  tourneyCode: int.parse(tourneyCodeEC.text),
+                                );
 
-                              BaseBottomMessage.showMessage(
-                                context,
-                                result,
-                                AppColors.secondaryBlack,
-                              );
+                                BaseBottomMessage.showMessage(
+                                  context,
+                                  result,
+                                  AppColors.secondaryBlack,
+                                );
 
-                              Navigator.pop(context);
+                                Navigator.pop(context);
+                              }
                             }
                           },
                           child: Padding(

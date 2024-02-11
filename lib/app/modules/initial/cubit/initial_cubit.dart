@@ -43,4 +43,37 @@ class InitialCubit extends Cubit<InitialState> {
 
     return result;
   }
+
+  Future<Map<String, dynamic>> getTourneyById({
+    required String tourneyId,
+  }) async {
+    final tourneyData =
+        await _firestoreService.getTourneyById(tourneyId: tourneyId);
+    return tourneyData;
+  }
+
+  Future<String> regsisterPlayer({
+    required String playerName,
+    required String teamName,
+    required String tourneyId,
+  }) async {
+    final tourney = await getTourneyById(
+      tourneyId: tourneyId,
+    );
+
+    int playersQuant = tourney['playersNumber'];
+
+    if (tourney['players'] == null ||
+        tourney['players'].length < playersQuant) {
+      final result = await _firestoreService.putPlayerInTourney(
+        playerName: playerName,
+        teamName: teamName,
+        tourneyId: tourneyId,
+      );
+
+      return result;
+    }
+
+    return 'Torneio lotado!';
+  }
 }

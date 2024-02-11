@@ -71,7 +71,9 @@ class _InitialPageState extends State<InitialPage> {
                 child: ElevatedButton(
                   onPressed: () {
                     Navigator.of(context).push(MaterialPageRoute(
-                      builder: (context) => const PlayTourneyPage(),
+                      builder: (context) => PlayTourneyPage(
+                        cubit: _cubit,
+                      ),
                     ));
                   },
                   child: Padding(

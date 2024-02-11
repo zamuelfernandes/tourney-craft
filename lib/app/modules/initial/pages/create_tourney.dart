@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:tourney_craft/app/modules/initial/cubit/initial_cubit.dart';
 import 'package:tourney_craft/app/shared/components/base_app_bar.dart';
 import 'package:tourney_craft/app/shared/components/base_bottom_message.dart';
+import 'package:tourney_craft/app/shared/themes/themes.dart';
 import 'package:validatorless/validatorless.dart';
 
 class CreateTourneyPage extends StatefulWidget {
@@ -124,7 +125,7 @@ class _CreateTourneyPageState extends State<CreateTourneyPage> {
                               BaseBottomMessage.showMessage(
                                 context,
                                 result,
-                                Colors.green,
+                                AppColors.secondaryBlack,
                               );
 
                               Navigator.pop(context);

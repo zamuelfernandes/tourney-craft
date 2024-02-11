@@ -1,10 +1,17 @@
 import 'package:flutter/material.dart';
+import 'package:tourney_craft/app/shared/themes/themes.dart';
 import 'package:validatorless/validatorless.dart';
 
 import '../../../shared/components/base_app_bar.dart';
+import '../../../shared/components/base_bottom_message.dart';
+import '../cubit/initial_cubit.dart';
 
 class PlayTourneyPage extends StatefulWidget {
-  const PlayTourneyPage({super.key});
+  final InitialCubit cubit;
+  const PlayTourneyPage({
+    super.key,
+    required this.cubit,
+  });
 
   @override
   State<PlayTourneyPage> createState() => _PlayTourneyPageState();
@@ -91,7 +98,6 @@ class _PlayTourneyPageState extends State<PlayTourneyPage> {
                       decoration: InputDecoration(
                         label: Text('Nome do Time:'.toUpperCase()),
                       ),
-                      keyboardType: TextInputType.number,
                     ),
                     const SizedBox(height: 25),
                     TextFormField(
@@ -100,7 +106,6 @@ class _PlayTourneyPageState extends State<PlayTourneyPage> {
                       decoration: InputDecoration(
                         label: Text('Código do Torneio:'.toUpperCase()),
                       ),
-                      keyboardType: TextInputType.number,
                     ),
                     const SizedBox(height: 40),
                     Hero(
@@ -109,7 +114,7 @@ class _PlayTourneyPageState extends State<PlayTourneyPage> {
                         width: sizeOf.width * .55,
                         height: sizeOf.height * .08,
                         child: ElevatedButton(
-                          onPressed: () {
+                          onPressed: () async {
                             final valid =
                                 formKey.currentState?.validate() ?? false;
 
@@ -118,6 +123,20 @@ class _PlayTourneyPageState extends State<PlayTourneyPage> {
                               print('Nome do Time: ${teamEC.text}');
                               print('Código do Torneio: ${tourneyCodeEC.text}');
                               print('...CADASTRAR PLAYER...');
+
+                              final result = await widget.cubit.regsisterPlayer(
+                                playerName: playerNameEC.text,
+                                teamName: teamEC.text,
+                                tourneyId: tourneyCodeEC.text,
+                              );
+
+                              BaseBottomMessage.showMessage(
+                                context,
+                                result,
+                                AppColors.secondaryBlack,
+                              );
+
+                              Navigator.pop(context);
                             }
                           },
                           child: Padding(

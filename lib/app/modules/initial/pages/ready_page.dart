@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:validatorless/validatorless.dart';
 
 import '../../../shared/components/base_app_bar.dart';
@@ -78,11 +77,6 @@ class _ReadyPageState extends State<ReadyPage> {
                       decoration: InputDecoration(
                         label: Text('Código do Torneio:'.toUpperCase()),
                       ),
-                      maxLength: 6,
-                      keyboardType: TextInputType.number,
-                      inputFormatters: <TextInputFormatter>[
-                        FilteringTextInputFormatter.digitsOnly,
-                      ],
                     ),
                     const SizedBox(height: 80),
                     Hero(

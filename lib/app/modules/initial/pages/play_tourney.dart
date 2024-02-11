@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:tourney_craft/app/shared/themes/themes.dart';
 import 'package:validatorless/validatorless.dart';
 
@@ -104,11 +103,6 @@ class _PlayTourneyPageState extends State<PlayTourneyPage> {
                     TextFormField(
                       controller: tourneyCodeEC,
                       validator: Validatorless.required('Campo obrigatório'),
-                      maxLength: 6,
-                      keyboardType: TextInputType.number,
-                      inputFormatters: <TextInputFormatter>[
-                        FilteringTextInputFormatter.digitsOnly,
-                      ],
                       decoration: InputDecoration(
                         label: Text('Código do Torneio:'.toUpperCase()),
                       ),

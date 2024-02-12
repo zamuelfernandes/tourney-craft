@@ -1,8 +1,8 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'base_state.dart';
+import 'sample_state.dart';
 
-class BaseCubit extends Cubit<BaseState> {
-  BaseCubit() : super(const BaseState());
+class SampleCubit extends Cubit<SampleState> {
+  SampleCubit() : super(const SampleState());
   List<String> data = ['Ok'];
 
   void fetchData() async {

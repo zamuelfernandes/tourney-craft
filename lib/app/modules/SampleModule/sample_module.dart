@@ -1,13 +1,13 @@
 import 'package:flutter_modular/flutter_modular.dart';
 
-import 'cubit/base_cubit.dart';
-import 'base_page.dart';
+import 'cubit/sample_cubit.dart';
+import 'sample_page.dart';
 
-class BaseModule extends Module {
+class SampleModule extends Module {
   @override
   void binds(Injector i) {
-    // i.addLazySingleton(BaseCubit.new);
-    i.add(BaseCubit().fetchData);
+    // i.addLazySingleton(SampleCubit.new);
+    i.add(SampleCubit().fetchData);
 
     super.binds(i);
   }
@@ -17,7 +17,7 @@ class BaseModule extends Module {
     r
       ..child(
         Modular.initialRoute,
-        child: (context) => BasePage(),
+        child: (context) => SamplePage(),
       );
 
     super.routes(r);

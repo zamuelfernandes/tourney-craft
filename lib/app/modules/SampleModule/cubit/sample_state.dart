@@ -1,6 +1,6 @@
 import 'package:equatable/equatable.dart';
 
-class BaseState extends Equatable {
+class SampleState extends Equatable {
   //Estados da tela
   final bool isLoading;
   final bool isSuccess;
@@ -13,7 +13,7 @@ class BaseState extends Equatable {
   final List<String> data;
 
   //Estados iniciais da tela
-  const BaseState({
+  const SampleState({
     this.isLoading = false,
     this.isSuccess = false,
     this.isError = false,
@@ -21,14 +21,14 @@ class BaseState extends Equatable {
     this.data = const [],
   });
 
-  BaseState copyWith({
+  SampleState copyWith({
     bool? isLoading,
     bool? isSuccess,
     bool? isError,
     String? message,
     List<String>? data,
   }) {
-    return BaseState(
+    return SampleState(
       isLoading: isLoading ?? this.isLoading,
       isSuccess: isSuccess ?? this.isSuccess,
       isError: isError ?? this.isError,

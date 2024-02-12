@@ -1,18 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../shared/components/base_app_bar.dart';
-import 'cubit/base_cubit.dart';
-import 'cubit/base_state.dart';
+import 'cubit/sample_cubit.dart';
+import 'cubit/sample_state.dart';
 
-class BasePage extends StatefulWidget {
-  const BasePage({super.key});
+class SamplePage extends StatefulWidget {
+  const SamplePage({super.key});
 
   @override
-  _BasePageState createState() => _BasePageState();
+  _SamplePageState createState() => _SamplePageState();
 }
 
-class _BasePageState extends State<BasePage> {
-  late BaseCubit _cubit;
+class _SamplePageState extends State<SamplePage> {
+  late SampleCubit _cubit;
 
   @override
   void dispose() {
@@ -22,7 +22,7 @@ class _BasePageState extends State<BasePage> {
 
   @override
   void initState() {
-    _cubit = BaseCubit()..fetchData();
+    _cubit = SampleCubit()..fetchData();
     super.initState();
   }
 
@@ -30,7 +30,7 @@ class _BasePageState extends State<BasePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: BaseAppBar(),
-      body: BlocConsumer<BaseCubit, BaseState>(
+      body: BlocConsumer<SampleCubit, SampleState>(
         bloc: _cubit,
         listener: (context, state) {
           if (state.isSuccess) {

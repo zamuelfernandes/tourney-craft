@@ -28,6 +28,8 @@ class _SamplePageState extends State<SamplePage> {
 
   @override
   Widget build(BuildContext context) {
+    final sizeOf = MediaQuery.sizeOf(context);
+
     return Scaffold(
       appBar: BaseAppBar(),
       body: BlocConsumer<SampleCubit, SampleState>(
@@ -44,7 +46,7 @@ class _SamplePageState extends State<SamplePage> {
         builder: (context, state) {
           if (state.isLoading) {
             return SizedBox(
-              height: MediaQuery.sizeOf(context).height * 0.55,
+              height: sizeOf.height * 0.55,
               child: Center(
                 child: CircularProgressIndicator(
                   color: Theme.of(context).colorScheme.primary,
@@ -57,8 +59,8 @@ class _SamplePageState extends State<SamplePage> {
             print(state.data.first);
 
             return SizedBox(
-              height: MediaQuery.sizeOf(context).height * 0.55,
-              width: MediaQuery.sizeOf(context).height * 0.75,
+              height: sizeOf.height * 0.55,
+              width: sizeOf.height * 0.75,
               child: Center(
                 child: Text(
                   state.message,
@@ -72,8 +74,8 @@ class _SamplePageState extends State<SamplePage> {
           }
           if (state.isError) {
             return SizedBox(
-              height: MediaQuery.sizeOf(context).height * 0.55,
-              width: MediaQuery.sizeOf(context).height * 0.75,
+              height: sizeOf.height * 0.55,
+              width: sizeOf.height * 0.75,
               child: Center(
                 child: Text(
                   state.message,

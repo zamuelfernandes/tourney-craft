@@ -1,4 +1,5 @@
 import 'package:equatable/equatable.dart';
+import 'package:tourney_craft/app/shared/models/tourney.dart';
 
 class CompleteTourneyState extends Equatable {
   //Estados da tela
@@ -10,7 +11,7 @@ class CompleteTourneyState extends Equatable {
   final String message;
 
   //Resultado Utilizado
-  final List<String> data;
+  final TourneyModel? tourney;
 
   //Estados iniciais da tela
   const CompleteTourneyState({
@@ -18,7 +19,7 @@ class CompleteTourneyState extends Equatable {
     this.isSuccess = false,
     this.isError = false,
     this.message = '',
-    this.data = const [],
+    this.tourney,
   });
 
   CompleteTourneyState copyWith({
@@ -26,14 +27,14 @@ class CompleteTourneyState extends Equatable {
     bool? isSuccess,
     bool? isError,
     String? message,
-    List<String>? data,
+    TourneyModel? tourney,
   }) {
     return CompleteTourneyState(
       isLoading: isLoading ?? this.isLoading,
       isSuccess: isSuccess ?? this.isSuccess,
       isError: isError ?? this.isError,
       message: message ?? this.message,
-      data: data ?? this.data,
+      tourney: tourney ?? this.tourney,
     );
   }
 
@@ -43,6 +44,6 @@ class CompleteTourneyState extends Equatable {
         isSuccess,
         isError,
         message,
-        data,
+        tourney,
       ];
 }

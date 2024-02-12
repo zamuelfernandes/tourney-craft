@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:tourney_craft/app/modules/complete_tourney/widgets/group_widget.dart';
 import '../../shared/components/base_app_bar.dart';
 import 'cubit/complete_tourney_cubit.dart';
 import 'cubit/complete_tourney_state.dart';
@@ -35,6 +36,8 @@ class _CompleteTourneyPageState extends State<CompleteTourneyPage> {
 
   @override
   Widget build(BuildContext context) {
+    final sizeOf = MediaQuery.sizeOf(context);
+
     return Scaffold(
       appBar: BaseAppBar(),
       body: BlocConsumer<CompleteTourneyCubit, CompleteTourneyState>(
@@ -51,7 +54,7 @@ class _CompleteTourneyPageState extends State<CompleteTourneyPage> {
         builder: (context, state) {
           if (state.isLoading) {
             return SizedBox(
-              height: MediaQuery.sizeOf(context).height * 0.55,
+              height: sizeOf.height * 0.55,
               child: Center(
                 child: CircularProgressIndicator(
                   color: Theme.of(context).colorScheme.primary,
@@ -61,24 +64,35 @@ class _CompleteTourneyPageState extends State<CompleteTourneyPage> {
           }
 
           if (state.isSuccess) {
+            final tourney = state.tourney!;
             return SizedBox(
-              height: MediaQuery.sizeOf(context).height * 0.55,
-              width: MediaQuery.sizeOf(context).height * 0.75,
+              height: sizeOf.height * 0.55,
+              width: sizeOf.height * 0.75,
               child: Center(
-                child: Text(
-                  state.message,
-                  textAlign: TextAlign.center,
-                  style: TextStyle(
-                    color: Colors.green,
-                  ),
+                child: Column(
+                  children: [
+                    Text(
+                      tourney.tourneyName,
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                        color: Colors.green,
+                      ),
+                    ),
+                    SizedBox(
+                      height: sizeOf.height * 0.05,
+                    ),
+                    GroupWidget(
+                      itemList: tourney.players,
+                    ),
+                  ],
                 ),
               ),
             );
           }
           if (state.isError) {
             return SizedBox(
-              height: MediaQuery.sizeOf(context).height * 0.55,
-              width: MediaQuery.sizeOf(context).height * 0.75,
+              height: sizeOf.height * 0.55,
+              width: sizeOf.height * 0.75,
               child: Center(
                 child: SelectableText(
                   state.message,

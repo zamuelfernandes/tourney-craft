@@ -18,13 +18,12 @@ class CompleteTourneyCubit extends Cubit<CompleteTourneyState> {
 
       final tourney = TourneyModel.fromFirestore(tourneyData);
 
-      print(tourney);
-
       //SUCCESS STATE
       emit(state.copyWith(
         isLoading: false,
         isSuccess: true,
         message: 'Success detected',
+        tourney: tourney,
       ));
     } catch (e) {
       //ERROR STATE

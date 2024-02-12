@@ -9,6 +9,7 @@ class FirestoreService {
   Future<String> createTourney({
     required String tourneyName,
     required int playersNumber,
+    required int adminPassword,
   }) async {
     bool hasError = true;
     try {
@@ -16,6 +17,10 @@ class FirestoreService {
         {
           'tourneyName': tourneyName,
           'playersNumber': playersNumber,
+          'adminPassword': adminPassword,
+          'status': 0,
+          'players': [],
+          'groups': [],
           'timestamp': FieldValue.serverTimestamp(),
         },
       ).whenComplete(() {

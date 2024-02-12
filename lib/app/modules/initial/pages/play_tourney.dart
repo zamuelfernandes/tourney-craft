@@ -124,7 +124,7 @@ class _PlayTourneyPageState extends State<PlayTourneyPage> {
                               print('Código do Torneio: ${tourneyCodeEC.text}');
                               print('...CADASTRAR PLAYER...');
 
-                              final result = await widget.cubit.regsisterPlayer(
+                              final result = await widget.cubit.registerPlayer(
                                 playerName: playerNameEC.text,
                                 teamName: teamEC.text,
                                 tourneyId: tourneyCodeEC.text,

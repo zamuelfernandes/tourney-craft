@@ -50,6 +50,7 @@ InputDecorationTheme get _defaultInputDecoration => InputDecorationTheme(
       errorBorder: _defautInputBorder.copyWith(
         borderSide: const BorderSide(color: Colors.red),
       ),
+      border: _defautInputBorder,
     );
 
 FloatingActionButtonThemeData get _defaultFloatingActionButtonTheme =>

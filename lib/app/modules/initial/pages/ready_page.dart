@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:tourney_craft/app/shared/themes/themes.dart';
 import 'package:validatorless/validatorless.dart';
 
 import '../../../shared/components/base_app_bar.dart';
@@ -13,10 +15,13 @@ class ReadyPage extends StatefulWidget {
 class _ReadyPageState extends State<ReadyPage> {
   final formKey = GlobalKey<FormState>();
   final tourneyCodeEC = TextEditingController();
+  final adminPasswordEC = TextEditingController();
+  bool isUser = false;
 
   @override
   void dispose() {
     tourneyCodeEC.dispose();
+    adminPasswordEC.dispose();
     super.dispose();
   }
 
@@ -78,7 +83,35 @@ class _ReadyPageState extends State<ReadyPage> {
                         label: Text('Código do Torneio:'.toUpperCase()),
                       ),
                     ),
+                    const SizedBox(height: 25),
+                    TextFormField(
+                      controller: adminPasswordEC,
+                      validator: isUser
+                          ? null
+                          : Validatorless.required('Campo obrigatório'),
+                      decoration: InputDecoration(
+                        label: Text('Senha de Administrador'.toUpperCase()),
+                      ),
+                      maxLength: 8,
+                      keyboardType: TextInputType.number,
+                      inputFormatters: <TextInputFormatter>[
+                        FilteringTextInputFormatter.digitsOnly,
+                      ],
+                    ),
                     const SizedBox(height: 80),
+                    SizedBox(
+                      width: sizeOf.width * .7,
+                      child: CheckboxListTile.adaptive(
+                        value: isUser,
+                        onChanged: (value) {
+                          setState(() {
+                            isUser = value!;
+                          });
+                        },
+                        activeColor: AppColors.secondaryBlack,
+                        title: const Text('Não sou Administrador'),
+                      ),
+                    ),
                     Hero(
                       tag: 'Ready',
                       child: SizedBox(

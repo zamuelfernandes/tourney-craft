@@ -21,11 +21,13 @@ class _CreateTourneyPageState extends State<CreateTourneyPage> {
   final formKey = GlobalKey<FormState>();
   final tourneyNameEC = TextEditingController();
   final playersNumberEC = TextEditingController();
+  final adminPasswordEC = TextEditingController();
 
   @override
   void dispose() {
     tourneyNameEC.dispose();
     playersNumberEC.dispose();
+    adminPasswordEC.dispose();
     super.dispose();
   }
 
@@ -101,6 +103,19 @@ class _CreateTourneyPageState extends State<CreateTourneyPage> {
                         FilteringTextInputFormatter.digitsOnly,
                       ],
                     ),
+                    const SizedBox(height: 25),
+                    TextFormField(
+                      controller: adminPasswordEC,
+                      validator: Validatorless.required('Campo obrigatório'),
+                      decoration: InputDecoration(
+                        label: Text('Senha dos Administradores:'.toUpperCase()),
+                      ),
+                      maxLength: 8,
+                      keyboardType: TextInputType.number,
+                      inputFormatters: <TextInputFormatter>[
+                        FilteringTextInputFormatter.digitsOnly,
+                      ],
+                    ),
                     const SizedBox(height: 40),
                     Hero(
                       tag: 'createTourney',
@@ -113,9 +128,6 @@ class _CreateTourneyPageState extends State<CreateTourneyPage> {
                                 formKey.currentState?.validate() ?? false;
 
                             if (valid) {
-                              print('Torneio: ${tourneyNameEC.text}');
-                              print('Jogadores: ${playersNumberEC.text}');
-                              print('...CRIAR TORNEIO...');
                               String result = '';
 
                               if (int.parse(playersNumberEC.text) < 8) {
@@ -130,6 +142,8 @@ class _CreateTourneyPageState extends State<CreateTourneyPage> {
                                   tourneyName: tourneyNameEC.text,
                                   playersNumber:
                                       int.parse(playersNumberEC.text),
+                                  adminPassword:
+                                      int.parse(adminPasswordEC.text),
                                 );
 
                                 BaseBottomMessage.showMessage(

@@ -35,10 +35,12 @@ class InitialCubit extends Cubit<InitialState> {
   Future<String> createTourney({
     required String tourneyName,
     required int playersNumber,
+    required int adminPassword,
   }) async {
     final result = await _firestoreService.createTourney(
       tourneyName: tourneyName,
       playersNumber: playersNumber,
+      adminPassword: adminPassword,
     );
 
     return result;
@@ -52,7 +54,7 @@ class InitialCubit extends Cubit<InitialState> {
     return tourneyData;
   }
 
-  Future<String> regsisterPlayer({
+  Future<String> registerPlayer({
     required String playerName,
     required String teamName,
     required String tourneyId,

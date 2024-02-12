@@ -145,7 +145,7 @@ class _CreateTourneyPageState extends State<CreateTourneyPage> {
                                     formKey.currentState?.validate() ?? false;
 
                                 if (valid) {
-                                  if (int.parse(playersNumberEC.text) < 8) {
+                                  if (int.parse(playersNumberEC.text) < 4) {
                                     BaseBottomMessage.showMessage(
                                       context,
                                       'O número mínimo de jogadores é 8!',
@@ -180,7 +180,7 @@ class _CreateTourneyPageState extends State<CreateTourneyPage> {
                           ),
                         ),
                         state.tourneyId.isNotEmpty
-                            ? Text('ID: ${state.tourneyId}')
+                            ? SelectableText('ID: ${state.tourneyId}')
                             : SizedBox(),
                       ],
                     ),

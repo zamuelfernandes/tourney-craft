@@ -24,7 +24,7 @@ class _ReadyPageState extends State<ReadyPage> {
   final formKey = GlobalKey<FormState>();
   final tourneyCodeEC = TextEditingController();
   final adminPasswordEC = TextEditingController();
-  bool isUser = false;
+  bool isAdm = false;
 
   @override
   void dispose() {
@@ -94,13 +94,15 @@ class _ReadyPageState extends State<ReadyPage> {
                     const SizedBox(height: 25),
                     TextFormField(
                       controller: adminPasswordEC,
-                      enabled: isUser,
-                      validator: Validatorless.required('Campo obrigatório'),
+                      enabled: isAdm,
+                      validator: isAdm
+                          ? Validatorless.required('Campo obrigatório')
+                          : null,
                       decoration: InputDecoration(
                         label: Text(
                           'Senha de ADM'.toUpperCase(),
                           style: TextStyle(
-                            color: isUser
+                            color: isAdm
                                 ? AppColors.darkPrimary
                                 : AppColors.lightPrimary,
                           ),
@@ -116,14 +118,14 @@ class _ReadyPageState extends State<ReadyPage> {
                     SizedBox(
                       width: sizeOf.width * .7,
                       child: CheckboxListTile.adaptive(
-                        value: isUser,
+                        value: isAdm,
                         onChanged: (value) {
                           setState(() {
-                            isUser = value!;
+                            isAdm = value!;
                           });
                         },
                         activeColor: AppColors.secondaryBlack,
-                        title: const Text('Não sou Administrador'),
+                        title: const Text('Sou Administrador'),
                       ),
                     ),
                     Hero(
@@ -145,9 +147,9 @@ class _ReadyPageState extends State<ReadyPage> {
                                   tourneyId: tourneyCodeEC.text,
                                 );
 
-                                if (isUser && tourney['status'] != 0) {
+                                if (!isAdm && tourney['status'] != 0) {
                                   print('Tudo Certo');
-                                } else if (isUser) {
+                                } else if (!isAdm) {
                                   BaseBottomMessage.showMessage(
                                     context,
                                     'Torneio ainda não iniciado!',
@@ -155,7 +157,7 @@ class _ReadyPageState extends State<ReadyPage> {
                                   );
                                 }
 
-                                if (!isUser &&
+                                if (isAdm &&
                                     tourney['adminPassword'] ==
                                         int.parse(adminPasswordEC.text)) {
                                   print('Tudo certo');

@@ -5,7 +5,11 @@ import 'cubit/complete_tourney_cubit.dart';
 import 'cubit/complete_tourney_state.dart';
 
 class CompleteTourneyPage extends StatefulWidget {
-  const CompleteTourneyPage({super.key});
+  final String tourneyId;
+  const CompleteTourneyPage({
+    super.key,
+    required this.tourneyId,
+  });
 
   @override
   _CompleteTourneyPageState createState() => _CompleteTourneyPageState();
@@ -22,7 +26,10 @@ class _CompleteTourneyPageState extends State<CompleteTourneyPage> {
 
   @override
   void initState() {
-    _cubit = CompleteTourneyCubit()..fetchData();
+    _cubit = CompleteTourneyCubit()
+      ..getTourneyById(
+        tourneyId: widget.tourneyId,
+      );
     super.initState();
   }
 
@@ -54,8 +61,6 @@ class _CompleteTourneyPageState extends State<CompleteTourneyPage> {
           }
 
           if (state.isSuccess) {
-            print(state.data.first);
-
             return SizedBox(
               height: MediaQuery.sizeOf(context).height * 0.55,
               width: MediaQuery.sizeOf(context).height * 0.75,
@@ -75,7 +80,7 @@ class _CompleteTourneyPageState extends State<CompleteTourneyPage> {
               height: MediaQuery.sizeOf(context).height * 0.55,
               width: MediaQuery.sizeOf(context).height * 0.75,
               child: Center(
-                child: Text(
+                child: SelectableText(
                   state.message,
                   textAlign: TextAlign.center,
                   style: TextStyle(

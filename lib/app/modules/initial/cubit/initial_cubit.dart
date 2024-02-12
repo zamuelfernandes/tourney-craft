@@ -70,6 +70,13 @@ class InitialCubit extends Cubit<InitialState> {
 
     int playersQuant = tourney['playersNumber'];
 
+    if (tourney['players'].length == playersQuant - 1) {
+      await _firestoreService.updateTourneyStatus(
+        tourneyId: tourneyId,
+        status: 1,
+      );
+    }
+
     if (await _firestoreService.doesIdExist(documentId: tourneyId)) {
       if (tourney['players'] == null ||
           tourney['players'].length < playersQuant) {

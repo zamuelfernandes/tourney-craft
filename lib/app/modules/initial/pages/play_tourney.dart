@@ -135,8 +135,6 @@ class _PlayTourneyPageState extends State<PlayTourneyPage> {
                                 result,
                                 AppColors.secondaryBlack,
                               );
-
-                              Navigator.pop(context);
                             }
                           },
                           child: Padding(

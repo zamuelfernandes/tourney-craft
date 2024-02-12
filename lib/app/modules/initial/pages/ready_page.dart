@@ -1,7 +1,9 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_modular/flutter_modular.dart';
 import 'package:tourney_craft/app/shared/components/base_bottom_message.dart';
+import 'package:tourney_craft/app/shared/constants/routes.dart';
 import 'package:validatorless/validatorless.dart';
 
 import 'package:tourney_craft/app/modules/initial/cubit/initial_cubit.dart';
@@ -22,13 +24,13 @@ class ReadyPage extends StatefulWidget {
 
 class _ReadyPageState extends State<ReadyPage> {
   final formKey = GlobalKey<FormState>();
-  final tourneyCodeEC = TextEditingController();
+  final tourneyId = TextEditingController();
   final adminPasswordEC = TextEditingController();
   bool isAdm = false;
 
   @override
   void dispose() {
-    tourneyCodeEC.dispose();
+    tourneyId.dispose();
     adminPasswordEC.dispose();
     super.dispose();
   }
@@ -85,7 +87,7 @@ class _ReadyPageState extends State<ReadyPage> {
                     ),
                     const SizedBox(height: 25),
                     TextFormField(
-                      controller: tourneyCodeEC,
+                      controller: tourneyId,
                       validator: Validatorless.required('Campo obrigatório'),
                       decoration: InputDecoration(
                         label: Text('Código do Torneio:'.toUpperCase()),
@@ -140,15 +142,15 @@ class _ReadyPageState extends State<ReadyPage> {
 
                             if (valid) {
                               if (await widget.cubit.doesIdExist(
-                                documentId: tourneyCodeEC.text,
+                                documentId: tourneyId.text,
                               )) {
                                 final tourney =
                                     await widget.cubit.getTourneyById(
-                                  tourneyId: tourneyCodeEC.text,
+                                  tourneyId: tourneyId.text,
                                 );
 
-                                if (!isAdm && tourney['status'] != 0) {
-                                  print('Tudo Certo');
+                                if (!isAdm && tourney['status'] == 2) {
+                                  print('GO TO DASHBOARD');
                                 } else if (!isAdm) {
                                   BaseBottomMessage.showMessage(
                                     context,
@@ -160,8 +162,21 @@ class _ReadyPageState extends State<ReadyPage> {
                                 if (isAdm &&
                                     tourney['adminPassword'] ==
                                         int.parse(adminPasswordEC.text)) {
-                                  print('Tudo certo');
-                                } else {
+                                  if (tourney['status'] == 1) {
+                                    Modular.to.pushNamed(
+                                      Routes.completeTourney,
+                                      arguments: tourneyId.text,
+                                    );
+                                  } else if (tourney['status'] == 0) {
+                                    BaseBottomMessage.showMessage(
+                                      context,
+                                      'Cadastros dos Jogadores \nainda não finalizados!',
+                                      AppColors.secondaryBlack,
+                                    );
+                                  } else {
+                                    print('GO TO DASHBOARD');
+                                  }
+                                } else if (isAdm) {
                                   BaseBottomMessage.showMessage(
                                     context,
                                     'Senha incorreta!',

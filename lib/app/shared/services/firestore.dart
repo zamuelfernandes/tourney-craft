@@ -16,12 +16,13 @@ class FirestoreService {
       DocumentReference documentReference = await _tourneyCollection.add(
         {
           'tourneyName': tourneyName,
-          'playersNumber': playersNumber,
-          'adminPassword': adminPassword,
-          'status': 0,
           'players': [],
           'groups': [],
-          'timestamp': FieldValue.serverTimestamp(),
+          'playersNumber': playersNumber,
+          'status': 0,
+          'adminPassword': adminPassword,
+          'matches': [],
+          'dateTime': DateTime.now(),
         },
       ).whenComplete(() {
         hasError = false;
@@ -45,6 +46,18 @@ class FirestoreService {
         tourneyId: '...',
       );
     }
+  }
+
+  Future<void> createEndPhase({required String tourneyId}) async {
+    await _tourneyCollection.doc(tourneyId).collection('endPhase').add(
+      {
+        'quarters': [],
+        'semis': [],
+        'thirdPlace': {},
+        'finalMatch': {},
+        'losers': {},
+      },
+    );
   }
 
   //READ TOURNEY
@@ -84,6 +97,12 @@ class FirestoreService {
           {
             'playerName': playerName,
             'teamName': teamName,
+            'points': 0,
+            'wins': 0,
+            'loses': 0,
+            'ties': 0,
+            'goalsMade': 0,
+            'goalsSuffered': 0,
           }
         ])
       }).whenComplete(() {
@@ -99,6 +118,15 @@ class FirestoreService {
       print(e);
       return e.toString();
     }
+  }
+
+  Future<void> updateTourneyStatus({
+    required String tourneyId,
+    required int status,
+  }) async {
+    await _tourneyCollection.doc(tourneyId).update({
+      'status': status,
+    });
   }
 
   //DELETE TOURNEY

@@ -1,12 +1,20 @@
+// ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:tourney_craft/app/shared/themes/themes.dart';
+import 'package:tourney_craft/app/shared/components/base_bottom_message.dart';
 import 'package:validatorless/validatorless.dart';
+
+import 'package:tourney_craft/app/modules/initial/cubit/initial_cubit.dart';
+import 'package:tourney_craft/app/shared/themes/themes.dart';
 
 import '../../../shared/components/base_app_bar.dart';
 
 class ReadyPage extends StatefulWidget {
-  const ReadyPage({super.key});
+  final InitialCubit cubit;
+  const ReadyPage({
+    Key? key,
+    required this.cubit,
+  }) : super(key: key);
 
   @override
   State<ReadyPage> createState() => _ReadyPageState();
@@ -37,7 +45,7 @@ class _ReadyPageState extends State<ReadyPage> {
       body: SingleChildScrollView(
         child: Container(
           constraints: BoxConstraints(
-            minHeight: sizeOf.height,
+            minHeight: sizeOf.height * .7,
           ),
           color: Colors.white,
           child: Align(
@@ -86,11 +94,17 @@ class _ReadyPageState extends State<ReadyPage> {
                     const SizedBox(height: 25),
                     TextFormField(
                       controller: adminPasswordEC,
-                      validator: isUser
-                          ? null
-                          : Validatorless.required('Campo obrigatório'),
+                      enabled: isUser,
+                      validator: Validatorless.required('Campo obrigatório'),
                       decoration: InputDecoration(
-                        label: Text('Senha de Administrador'.toUpperCase()),
+                        label: Text(
+                          'Senha de ADM'.toUpperCase(),
+                          style: TextStyle(
+                            color: isUser
+                                ? AppColors.darkPrimary
+                                : AppColors.lightPrimary,
+                          ),
+                        ),
                       ),
                       maxLength: 8,
                       keyboardType: TextInputType.number,
@@ -118,13 +132,47 @@ class _ReadyPageState extends State<ReadyPage> {
                         width: sizeOf.width * .55,
                         height: sizeOf.height * .08,
                         child: ElevatedButton(
-                          onPressed: () {
+                          onPressed: () async {
                             final valid =
                                 formKey.currentState?.validate() ?? false;
 
                             if (valid) {
-                              print('Código do Torneio: ${tourneyCodeEC.text}');
-                              print('...CADASTRAR PLAYER...');
+                              if (await widget.cubit.doesIdExist(
+                                documentId: tourneyCodeEC.text,
+                              )) {
+                                final tourney =
+                                    await widget.cubit.getTourneyById(
+                                  tourneyId: tourneyCodeEC.text,
+                                );
+
+                                if (isUser && tourney['status'] != 0) {
+                                  print('Tudo Certo');
+                                } else if (isUser) {
+                                  BaseBottomMessage.showMessage(
+                                    context,
+                                    'Torneio ainda não iniciado!',
+                                    AppColors.secondaryBlack,
+                                  );
+                                }
+
+                                if (!isUser &&
+                                    tourney['adminPassword'] ==
+                                        int.parse(adminPasswordEC.text)) {
+                                  print('Tudo certo');
+                                } else {
+                                  BaseBottomMessage.showMessage(
+                                    context,
+                                    'Senha incorreta!',
+                                    AppColors.secondaryBlack,
+                                  );
+                                }
+                              } else {
+                                BaseBottomMessage.showMessage(
+                                  context,
+                                  'Torneio não encontrado!',
+                                  AppColors.secondaryBlack,
+                                );
+                              }
                             }
                           },
                           child: Padding(

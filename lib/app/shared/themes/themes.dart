@@ -27,14 +27,14 @@ final class AppColors {
 
 OutlineInputBorder get _defautInputBorder => OutlineInputBorder(
       borderRadius: BorderRadius.circular(16),
-      borderSide: const BorderSide(color: AppColors.lightPrimary, width: 1.5),
+      borderSide: const BorderSide(color: AppColors.darkPrimary, width: 1.5),
     );
 
 InputDecorationTheme get _defaultInputDecoration => InputDecorationTheme(
       filled: true,
       fillColor: AppColors.white,
       labelStyle: const TextStyle(
-        color: AppColors.lightPrimary,
+        color: AppColors.darkPrimary,
         fontSize: 16,
         fontWeight: FontWeight.w600,
       ),

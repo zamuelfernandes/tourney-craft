@@ -111,7 +111,9 @@ class _InitialPageState extends State<InitialPage> {
             TextButton(
               onPressed: () {
                 Navigator.of(context).push(MaterialPageRoute(
-                  builder: (context) => const ReadyPage(),
+                  builder: (context) => ReadyPage(
+                    cubit: _cubit,
+                  ),
                 ));
               },
               child: Text(
@@ -124,6 +126,10 @@ class _InitialPageState extends State<InitialPage> {
                 ),
               ),
             ),
+            Align(
+              alignment: AlignmentDirectional.bottomCenter,
+              child: Text('Tourney Craft © 2021'),
+            )
           ],
         ),
       ),

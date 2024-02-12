@@ -6,14 +6,14 @@ class FirestoreService {
       FirebaseFirestore.instance.collection('tourneys');
 
   //CREATE TOURNEY
-  Future<String> createTourney({
+  Future<({String message, String tourneyId})> createTourney({
     required String tourneyName,
     required int playersNumber,
     required int adminPassword,
   }) async {
     bool hasError = true;
     try {
-      await _tourneyCollection.add(
+      DocumentReference documentReference = await _tourneyCollection.add(
         {
           'tourneyName': tourneyName,
           'playersNumber': playersNumber,
@@ -28,13 +28,22 @@ class FirestoreService {
       });
 
       if (hasError) {
-        return 'Erro ao criar torneio!';
+        return (
+          message: 'Erro ao criar torneio!',
+          tourneyId: documentReference.id,
+        );
       } else {
-        return 'Torneio criado com sucesso!';
+        return (
+          message: 'Torneio criado com sucesso!',
+          tourneyId: documentReference.id,
+        );
       }
     } catch (e) {
-      print(e);
-      return e.toString();
+      print('ERRO: ${e.toString()}');
+      return (
+        message: 'ERRO: ${e.toString()}',
+        tourneyId: '...',
+      );
     }
   }
 

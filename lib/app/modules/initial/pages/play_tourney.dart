@@ -42,7 +42,7 @@ class _PlayTourneyPageState extends State<PlayTourneyPage> {
       body: SingleChildScrollView(
         child: Container(
           constraints: BoxConstraints(
-            minHeight: sizeOf.height,
+            minHeight: sizeOf.height * .7,
           ),
           color: Colors.white,
           child: Align(

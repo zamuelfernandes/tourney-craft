@@ -10,7 +10,7 @@ class InitialState extends Equatable {
   final String message;
 
   //Resultado Utilizado
-  final List<String> data;
+  final String tourneyId;
 
   //Estados iniciais da tela
   const InitialState({
@@ -18,7 +18,7 @@ class InitialState extends Equatable {
     this.isSuccess = false,
     this.isError = false,
     this.message = '',
-    this.data = const [],
+    this.tourneyId = '',
   });
 
   InitialState copyWith({
@@ -26,14 +26,14 @@ class InitialState extends Equatable {
     bool? isSuccess,
     bool? isError,
     String? message,
-    List<String>? data,
+    String? tourneyId,
   }) {
     return InitialState(
       isLoading: isLoading ?? this.isLoading,
       isSuccess: isSuccess ?? this.isSuccess,
       isError: isError ?? this.isError,
       message: message ?? this.message,
-      data: data ?? this.data,
+      tourneyId: tourneyId ?? this.tourneyId,
     );
   }
 
@@ -43,6 +43,6 @@ class InitialState extends Equatable {
         isSuccess,
         isError,
         message,
-        data,
+        tourneyId,
       ];
 }

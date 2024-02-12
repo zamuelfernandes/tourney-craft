@@ -4,7 +4,6 @@ import 'initial_state.dart';
 
 class InitialCubit extends Cubit<InitialState> {
   InitialCubit() : super(const InitialState());
-  List<String> data = ['Ok'];
   final FirestoreService _firestoreService = FirestoreService();
 
   void fetchData() async {
@@ -17,7 +16,6 @@ class InitialCubit extends Cubit<InitialState> {
       emit(state.copyWith(
         isLoading: false,
         isSuccess: true,
-        data: data,
         message: 'Success detected',
       ));
     } catch (e) {
@@ -32,18 +30,25 @@ class InitialCubit extends Cubit<InitialState> {
     }
   }
 
-  Future<String> createTourney({
+  Future<void> createTourney({
     required String tourneyName,
     required int playersNumber,
     required int adminPassword,
   }) async {
+    emit(state.copyWith(isLoading: true));
+
     final result = await _firestoreService.createTourney(
       tourneyName: tourneyName,
       playersNumber: playersNumber,
       adminPassword: adminPassword,
     );
 
-    return result;
+    emit(state.copyWith(
+      isLoading: false,
+      isSuccess: true,
+      message: result.message,
+      tourneyId: result.tourneyId,
+    ));
   }
 
   Future<Map<String, dynamic>> getTourneyById({
@@ -81,5 +86,9 @@ class InitialCubit extends Cubit<InitialState> {
     }
 
     return 'Torneio lotado!';
+  }
+
+  Future<bool> doesIdExist({required String documentId}) async {
+    return await _firestoreService.doesIdExist(documentId: documentId);
   }
 }

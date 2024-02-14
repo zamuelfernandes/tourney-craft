@@ -1,4 +1,77 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
+
+class TourneyModel {
+  String tourneyName;
+  List<PlayerModel> players;
+  List<GroupModel> groups;
+  int playersNumber;
+  int status;
+  int adminPassword;
+  List<MatchModel> matches;
+  // EndPhaseModel endPhase;
+  DateTime timestamp;
+
+  TourneyModel({
+    required this.tourneyName,
+    required this.players,
+    required this.groups,
+    required this.playersNumber,
+    required this.status,
+    required this.adminPassword,
+    required this.matches,
+    // required this.endPhase,
+    required this.timestamp,
+  });
+
+  factory TourneyModel.fromFirestore(Map<String, dynamic> data) {
+    List<PlayerModel> playersList = (data['players'] as List<dynamic>?)
+            ?.map((player) => PlayerModel.fromMap(player))
+            .toList() ??
+        [];
+
+    List<GroupModel> groupsList = (data['groups'] as List<dynamic>?)
+            ?.map((group) => GroupModel(
+                  players: List<PlayerModel>.from(group['players']
+                      .map((player) => PlayerModel.fromMap(player))),
+                  matches: List<MatchModel>.from(group['matches']
+                      .map((match) => MatchModel.fromMap(match))),
+                ))
+            .toList() ??
+        [];
+
+    List<MatchModel> matchesList = (data['matches'] as List<dynamic>?)
+            ?.map((match) => MatchModel.fromMap(match))
+            .toList() ??
+        [];
+
+    // EndPhaseModel endPhase = EndPhaseModel(
+    //   quarters: (data['endPhase']?['quarters'] as List<dynamic>?)
+    //           ?.map((match) => MatchModel.fromMap(match))
+    //           .toList() ??
+    //       [],
+    //   semis: (data['endPhase']?['semis'] as List<dynamic>?)
+    //           ?.map((match) => MatchModel.fromMap(match))
+    //           .toList() ??
+    //       [],
+    //   thirdPlace: MatchModel.fromMap(data['endPhase']?['thirdPlace'] ?? {}),
+    //   finalMatch: MatchModel.fromMap(data['endPhase']?['finalMatch'] ?? {}),
+    //   losers: MatchModel.fromMap(data['endPhase']?['losers'] ?? {}),
+    // );
+
+    return TourneyModel(
+      tourneyName: data['tourneyName'] ?? '',
+      players: playersList,
+      groups: groupsList,
+      playersNumber: data['playersNumber'] ?? 0,
+      status: data['status'] ?? 0,
+      adminPassword: data['adminPassword'] ?? '',
+      matches: matchesList,
+      // endPhase: endPhase,
+      timestamp: DateTime.parse(data['dateTime'].toDate().toString()),
+    );
+  }
+}
+
 class PlayerModel {
   String playerName;
   String teamName;
@@ -83,76 +156,4 @@ class EndPhaseModel {
     required this.finalMatch,
     required this.losers,
   });
-}
-
-class TourneyModel {
-  String tourneyName;
-  List<PlayerModel> players;
-  List<GroupModel> groups;
-  int playersNumber;
-  int status;
-  int adminPassword;
-  List<MatchModel> matches;
-  // EndPhaseModel endPhase;
-  DateTime timestamp;
-
-  TourneyModel({
-    required this.tourneyName,
-    required this.players,
-    required this.groups,
-    required this.playersNumber,
-    required this.status,
-    required this.adminPassword,
-    required this.matches,
-    // required this.endPhase,
-    required this.timestamp,
-  });
-
-  factory TourneyModel.fromFirestore(Map<String, dynamic> data) {
-    List<PlayerModel> playersList = (data['players'] as List<dynamic>?)
-            ?.map((player) => PlayerModel.fromMap(player))
-            .toList() ??
-        [];
-
-    List<GroupModel> groupsList = (data['groups'] as List<dynamic>?)
-            ?.map((group) => GroupModel(
-                  players: List<PlayerModel>.from(group['players']
-                      .map((player) => PlayerModel.fromMap(player))),
-                  matches: List<MatchModel>.from(group['matches']
-                      .map((match) => MatchModel.fromMap(match))),
-                ))
-            .toList() ??
-        [];
-
-    List<MatchModel> matchesList = (data['matches'] as List<dynamic>?)
-            ?.map((match) => MatchModel.fromMap(match))
-            .toList() ??
-        [];
-
-    // EndPhaseModel endPhase = EndPhaseModel(
-    //   quarters: (data['endPhase']?['quarters'] as List<dynamic>?)
-    //           ?.map((match) => MatchModel.fromMap(match))
-    //           .toList() ??
-    //       [],
-    //   semis: (data['endPhase']?['semis'] as List<dynamic>?)
-    //           ?.map((match) => MatchModel.fromMap(match))
-    //           .toList() ??
-    //       [],
-    //   thirdPlace: MatchModel.fromMap(data['endPhase']?['thirdPlace'] ?? {}),
-    //   finalMatch: MatchModel.fromMap(data['endPhase']?['finalMatch'] ?? {}),
-    //   losers: MatchModel.fromMap(data['endPhase']?['losers'] ?? {}),
-    // );
-
-    return TourneyModel(
-      tourneyName: data['tourneyName'] ?? '',
-      players: playersList,
-      groups: groupsList,
-      playersNumber: data['playersNumber'] ?? 0,
-      status: data['status'] ?? 0,
-      adminPassword: data['adminPassword'] ?? '',
-      matches: matchesList,
-      // endPhase: endPhase,
-      timestamp: DateTime.parse(data['dateTime'].toDate().toString()),
-    );
-  }
 }

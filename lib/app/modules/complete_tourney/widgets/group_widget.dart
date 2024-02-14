@@ -5,11 +5,11 @@ import 'package:tourney_craft/app/shared/models/tourney.dart';
 import 'package:tourney_craft/app/shared/themes/themes.dart';
 
 class GroupWidget extends StatefulWidget {
-  final List<PlayerModel> itemList;
+  final List<PlayerModel> playersList;
 
   const GroupWidget({
     Key? key,
-    required this.itemList,
+    required this.playersList,
   }) : super(key: key);
 
   @override
@@ -19,64 +19,91 @@ class GroupWidget extends StatefulWidget {
 class _GroupWidgetState extends State<GroupWidget> {
   @override
   Widget build(BuildContext context) {
-    final items = widget.itemList;
+    final players = widget.playersList;
 
-    return SizedBox(
-      width: MediaQuery.of(context).size.width * 0.9,
-      height: MediaQuery.of(context).size.height * 0.4,
-      child: ReorderableListView(
-        onReorder: (oldIndex, newIndex) {
-          setState(() {
-            if (newIndex > oldIndex) {
-              newIndex -= 1;
-            }
-            final item = items.removeAt(oldIndex);
-            items.insert(newIndex, item);
-          });
-        },
-        children: [
-          for (final item in items)
-            Container(
-              key: UniqueKey(),
-              height: 80,
-              margin: const EdgeInsets.only(bottom: 5),
-              child: Card(
-                child: ListTile(
-                  leading: Icon(
-                    Icons.account_circle_rounded,
-                    size: 30,
-                  ),
-                  title: Text(
-                    item.playerName,
-                    style: AppTextStyle.titleSmallStyle.copyWith(
-                      fontSize: 16,
-                    ),
-                  ),
-                  subtitle: Text(
-                    item.teamName,
-                    style: AppTextStyle.subtitleStyle.copyWith(
-                      fontSize: 14,
-                    ),
-                  ),
-                  trailing: const Icon(
-                    Icons.swipe_vertical_outlined,
-                    size: 28,
-                  ),
-                ),
-              ),
-            ),
-        ],
-        footer: InkWell(
-          onTap: () {},
-          child: Container(
+    return ReorderableListView(
+      onReorder: (oldIndex, newIndex) {
+        setState(() {
+          if (newIndex > oldIndex) {
+            newIndex -= 1;
+          }
+          final player = players.removeAt(oldIndex);
+          players.insert(newIndex, player);
+        });
+      },
+      children: [
+        for (final player in players)
+          Container(
+            key: UniqueKey(),
             height: 80,
-            child: Card(
-              elevation: 2,
-              child: Center(
-                child: Icon(
-                  Icons.add,
-                  size: 30,
+            margin: const EdgeInsets.only(
+              bottom: 8,
+              left: 16,
+              right: 16,
+            ),
+            child: Stack(
+              alignment: Alignment.topRight,
+              children: [
+                Card(
+                  child: ListTile(
+                    leading: Icon(
+                      Icons.account_circle_rounded,
+                      size: 30,
+                    ),
+                    title: Text(
+                      player.playerName,
+                      style: AppTextStyle.titleSmallStyle.copyWith(
+                        fontSize: 16,
+                      ),
+                    ),
+                    subtitle: Text(
+                      player.teamName,
+                      style: AppTextStyle.subtitleStyle.copyWith(
+                        fontSize: 14,
+                      ),
+                    ),
+                    trailing: const Icon(
+                      Icons.swipe_vertical_outlined,
+                      size: 28,
+                    ),
+                  ),
                 ),
+                SizedBox(
+                  width: 30,
+                  height: 30,
+                  child: ElevatedButton(
+                    onPressed: () {
+                      //ADD PLAYER
+                    },
+                    child: Icon(
+                      Icons.close_sharp,
+                      size: 15,
+                    ),
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Colors.red,
+                      shape: const CircleBorder(),
+                      padding: const EdgeInsets.all(8),
+                    ),
+                  ),
+                )
+              ],
+            ),
+          ),
+      ],
+      footer: InkWell(
+        onTap: () {},
+        child: Container(
+          height: 80,
+          margin: const EdgeInsets.only(
+            bottom: 8,
+            left: 16,
+            right: 16,
+          ),
+          child: Card(
+            child: Center(
+              child: Icon(
+                Icons.add,
+                size: 30,
               ),
             ),
           ),

@@ -21,7 +21,7 @@ class BaseAppBar extends StatelessWidget implements PreferredSizeWidget {
     return AppBar(
       backgroundColor: AppColors.darkPrimary,
       foregroundColor: AppColors.white,
-      title: showCenterIcons
+      title: showCenterIcons && title.isEmpty
           ? const SizedBox()
           : Text(
               title.toUpperCase(),
@@ -44,7 +44,7 @@ class BaseAppBar extends StatelessWidget implements PreferredSizeWidget {
         ),
         child: Padding(
           padding: EdgeInsets.only(top: showCenterIcons ? 8 : 25),
-          child: showCenterIcons
+          child: showCenterIcons && title.isEmpty
               ? Image.asset(
                   'assets/images/tatu_head.png',
                   width: MediaQuery.sizeOf(context).width * 0.45,

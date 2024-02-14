@@ -35,102 +35,104 @@ class _InitialPageState extends State<InitialPage> {
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: const BaseAppBar(showCenterIcons: false),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.start,
-          children: <Widget>[
-            SizedBox(height: sizeOf.height * .06),
-            Hero(
-              tag: 'logo',
-              child: Card(
-                elevation: 15,
-                surfaceTintColor: Colors.white,
-                color: Colors.white,
-                shape: const CircleBorder(),
-                child: Padding(
-                  padding: const EdgeInsets.all(25),
-                  child: ClipRRect(
-                    borderRadius: BorderRadius.circular(100),
-                    child: SizedBox(
-                      width: sizeOf.width * .5,
-                      child: Image.asset(
-                        'assets/icon/logo.png',
-                        fit: BoxFit.cover,
+      body: SingleChildScrollView(
+        child: Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: <Widget>[
+              SizedBox(height: sizeOf.height * .06),
+              Hero(
+                tag: 'logo',
+                child: Card(
+                  elevation: 15,
+                  surfaceTintColor: Colors.white,
+                  color: Colors.white,
+                  shape: const CircleBorder(),
+                  child: Padding(
+                    padding: const EdgeInsets.all(25),
+                    child: ClipRRect(
+                      borderRadius: BorderRadius.circular(100),
+                      child: SizedBox(
+                        width: sizeOf.width * .5,
+                        child: Image.asset(
+                          'assets/icon/logo.png',
+                          fit: BoxFit.cover,
+                        ),
                       ),
                     ),
                   ),
                 ),
               ),
-            ),
-            SizedBox(height: sizeOf.height * .1),
-            Hero(
-              tag: 'playTourney',
-              child: SizedBox(
-                width: sizeOf.width * .55,
-                height: sizeOf.height * .08,
-                child: ElevatedButton(
-                  onPressed: () {
-                    Navigator.of(context).push(MaterialPageRoute(
-                      builder: (context) => PlayTourneyPage(
-                        cubit: _cubit,
+              SizedBox(height: sizeOf.height * .1),
+              Hero(
+                tag: 'playTourney',
+                child: SizedBox(
+                  width: sizeOf.width * .55,
+                  height: sizeOf.height * .08,
+                  child: ElevatedButton(
+                    onPressed: () {
+                      Navigator.of(context).push(MaterialPageRoute(
+                        builder: (context) => PlayTourneyPage(
+                          cubit: _cubit,
+                        ),
+                      ));
+                    },
+                    child: Padding(
+                      padding: const EdgeInsets.all(12),
+                      child: Text(
+                        'Cadastrar no Torneio'.toUpperCase(),
+                        textAlign: TextAlign.center,
                       ),
-                    ));
-                  },
-                  child: Padding(
-                    padding: const EdgeInsets.all(12),
-                    child: Text(
-                      'Cadastrar no Torneio'.toUpperCase(),
-                      textAlign: TextAlign.center,
                     ),
                   ),
                 ),
               ),
-            ),
-            const SizedBox(height: 30),
-            Hero(
-              tag: 'createTourney',
-              child: SizedBox(
-                width: sizeOf.width * .55,
-                height: sizeOf.height * .08,
-                child: ElevatedButton(
-                  onPressed: () {
-                    Navigator.of(context).push(MaterialPageRoute(
-                      builder: (context) => CreateTourneyPage(
-                        cubit: _cubit,
-                      ),
-                    ));
-                  },
-                  child: Padding(
-                    padding: const EdgeInsets.all(12),
-                    child: Text('Criar Torneio'.toUpperCase()),
+              const SizedBox(height: 30),
+              Hero(
+                tag: 'createTourney',
+                child: SizedBox(
+                  width: sizeOf.width * .55,
+                  height: sizeOf.height * .08,
+                  child: ElevatedButton(
+                    onPressed: () {
+                      Navigator.of(context).push(MaterialPageRoute(
+                        builder: (context) => CreateTourneyPage(
+                          cubit: _cubit,
+                        ),
+                      ));
+                    },
+                    child: Padding(
+                      padding: const EdgeInsets.all(12),
+                      child: Text('Criar Torneio'.toUpperCase()),
+                    ),
                   ),
                 ),
               ),
-            ),
-            const SizedBox(height: 80),
-            TextButton(
-              onPressed: () {
-                Navigator.of(context).push(MaterialPageRoute(
-                  builder: (context) => ReadyPage(
-                    cubit: _cubit,
+              const SizedBox(height: 80),
+              TextButton(
+                onPressed: () {
+                  Navigator.of(context).push(MaterialPageRoute(
+                    builder: (context) => ReadyPage(
+                      cubit: _cubit,
+                    ),
+                  ));
+                },
+                child: Text(
+                  'Já estou em um torneio'.toUpperCase(),
+                  style: AppTextStyle.subtitleStyle.copyWith(
+                    fontSize: 12,
+                    color: Colors.blue,
+                    fontWeight: FontWeight.bold,
+                    decoration: TextDecoration.underline,
                   ),
-                ));
-              },
-              child: Text(
-                'Já estou em um torneio',
-                style: AppTextStyle.subtitleStyle.copyWith(
-                  fontSize: 14,
-                  color: AppColors.darkPrimary,
-                  fontWeight: FontWeight.normal,
-                  decoration: TextDecoration.underline,
                 ),
               ),
-            ),
-            Align(
-              alignment: AlignmentDirectional.bottomCenter,
-              child: Text('Tourney Craft © 2021'),
-            )
-          ],
+              Align(
+                alignment: AlignmentDirectional.bottomCenter,
+                child: Text('Tourney Craft © 2021'),
+              ),
+            ],
+          ),
         ),
       ),
     );

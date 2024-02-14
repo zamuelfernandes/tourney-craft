@@ -10,6 +10,8 @@ import 'package:tourney_craft/app/modules/initial/cubit/initial_cubit.dart';
 import 'package:tourney_craft/app/shared/themes/themes.dart';
 
 import '../../../shared/components/base_app_bar.dart';
+import '../../../shared/constants/constants.dart';
+import '../../../shared/services/tourney_repository.dart';
 
 class ReadyPage extends StatefulWidget {
   final InitialCubit cubit;
@@ -151,6 +153,20 @@ class _ReadyPageState extends State<ReadyPage> {
 
                                 if (!isAdm && tourney['status'] == 2) {
                                   print('GO TO DASHBOARD');
+                                  final folderRepository = TourneyRepository();
+
+                                  await folderRepository.saveValue(
+                                    Constants.tourneyCodeFolder,
+                                    tourneyId.text,
+                                  );
+                                  await folderRepository.saveValue(
+                                    Constants.admPasswordFolder,
+                                    adminPasswordEC.text,
+                                  );
+                                  await folderRepository.saveValue(
+                                    Constants.tourneyStatusFolder,
+                                    tourney['status'].toString(),
+                                  );
                                 } else if (!isAdm) {
                                   BaseBottomMessage.showMessage(
                                     context,
@@ -163,6 +179,22 @@ class _ReadyPageState extends State<ReadyPage> {
                                     tourney['adminPassword'] ==
                                         int.parse(adminPasswordEC.text)) {
                                   if (tourney['status'] == 1) {
+                                    final folderRepository =
+                                        TourneyRepository();
+
+                                    await folderRepository.saveValue(
+                                      Constants.tourneyCodeFolder,
+                                      tourneyId.text,
+                                    );
+                                    await folderRepository.saveValue(
+                                      Constants.admPasswordFolder,
+                                      adminPasswordEC.text,
+                                    );
+                                    await folderRepository.saveValue(
+                                      Constants.tourneyStatusFolder,
+                                      tourney['status'].toString(),
+                                    );
+
                                     Modular.to.pushNamed(
                                       Routes.completeTourney,
                                       arguments: tourneyId.text,
@@ -175,6 +207,21 @@ class _ReadyPageState extends State<ReadyPage> {
                                     );
                                   } else {
                                     print('GO TO DASHBOARD');
+                                    final folderRepository =
+                                        TourneyRepository();
+
+                                    await folderRepository.saveValue(
+                                      Constants.tourneyCodeFolder,
+                                      tourneyId.text,
+                                    );
+                                    await folderRepository.saveValue(
+                                      Constants.admPasswordFolder,
+                                      adminPasswordEC.text,
+                                    );
+                                    await folderRepository.saveValue(
+                                      Constants.tourneyStatusFolder,
+                                      tourney['status'].toString(),
+                                    );
                                   }
                                 } else if (isAdm) {
                                   BaseBottomMessage.showMessage(

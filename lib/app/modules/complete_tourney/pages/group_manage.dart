@@ -4,8 +4,10 @@ import 'package:tourney_craft/app/shared/components/base_app_bar.dart';
 import 'package:tourney_craft/app/shared/themes/themes.dart';
 
 import '../../../shared/models/tourney.dart';
+import '../cubit/complete_tourney_cubit.dart';
 
 class GroupManagePage extends StatefulWidget {
+  final CompleteTourneyCubit cubit;
   final List<PlayerModel> playersList;
   final List<int> groups;
   final int selectedGroup;
@@ -15,6 +17,7 @@ class GroupManagePage extends StatefulWidget {
     required this.groups,
     required this.selectedGroup,
     required this.playersList,
+    required this.cubit,
   });
 
   @override
@@ -25,9 +28,12 @@ class _GroupManagePageState extends State<GroupManagePage> {
   int selectedGroup = -1;
   int selectedBusinessId = -1;
 
+  List<List<PlayerModel>> groupsList = [];
+
   @override
   void initState() {
     selectedGroup = widget.selectedGroup;
+    groupsList = List.generate(widget.groups.length, (index) => []);
     super.initState();
   }
 
@@ -73,10 +79,29 @@ class _GroupManagePageState extends State<GroupManagePage> {
             ),
           ),
           const SizedBox(height: 15),
-          SizedBox(
+          Container(
             height: sizeOf.height * 0.7,
+            margin: EdgeInsets.symmetric(horizontal: 15),
+            decoration: BoxDecoration(
+              border: Border.all(
+                color: AppColors.secondaryBlack,
+                width: 2,
+              ),
+              borderRadius: BorderRadius.circular(15),
+              color: Colors.white,
+              boxShadow: [
+                BoxShadow(
+                  color: AppColors.black.withOpacity(.2),
+                  blurRadius: 8,
+                  spreadRadius: 5,
+                ),
+              ],
+            ),
             child: GroupWidget(
-              playersList: widget.playersList,
+              playersList: groupsList[selectedGroup - 1],
+              onAddPlayer: () {
+                print('Adicionar jogador');
+              },
             ),
           )
         ],

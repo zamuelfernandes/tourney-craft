@@ -13,6 +13,7 @@ class CompleteTourneyState extends Equatable {
   //Resultado Utilizado
   final TourneyModel? tourney;
   final bool ready;
+  final int groupQuant;
 
   //Estados iniciais da tela
   const CompleteTourneyState({
@@ -22,6 +23,7 @@ class CompleteTourneyState extends Equatable {
     this.message = '',
     this.tourney,
     this.ready = false,
+    this.groupQuant = 0,
   });
 
   CompleteTourneyState copyWith({
@@ -31,6 +33,7 @@ class CompleteTourneyState extends Equatable {
     String? message,
     TourneyModel? tourney,
     bool? ready,
+    int? groupQuant,
   }) {
     return CompleteTourneyState(
       isLoading: isLoading ?? this.isLoading,
@@ -39,6 +42,7 @@ class CompleteTourneyState extends Equatable {
       message: message ?? this.message,
       tourney: tourney ?? this.tourney,
       ready: ready ?? this.ready,
+      groupQuant: groupQuant ?? this.groupQuant,
     );
   }
 
@@ -50,5 +54,6 @@ class CompleteTourneyState extends Equatable {
         message,
         tourney,
         ready,
+        groupQuant,
       ];
 }

@@ -37,4 +37,8 @@ class CompleteTourneyCubit extends Cubit<CompleteTourneyState> {
           : null;
     }
   }
+
+  void setGroupQuant({required int number}) {
+    emit(state.copyWith(groupQuant: number));
+  }
 }

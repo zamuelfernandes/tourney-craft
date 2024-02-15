@@ -6,10 +6,12 @@ import 'package:tourney_craft/app/shared/themes/themes.dart';
 
 class GroupWidget extends StatefulWidget {
   final List<PlayerModel> playersList;
+  final void Function()? onAddPlayer;
 
   const GroupWidget({
     Key? key,
     required this.playersList,
+    this.onAddPlayer,
   }) : super(key: key);
 
   @override
@@ -36,10 +38,9 @@ class _GroupWidgetState extends State<GroupWidget> {
           Container(
             key: UniqueKey(),
             height: 80,
-            margin: const EdgeInsets.only(
-              bottom: 8,
-              left: 16,
-              right: 16,
+            margin: const EdgeInsets.symmetric(
+              vertical: 5,
+              horizontal: 10,
             ),
             child: Stack(
               alignment: Alignment.topRight,
@@ -90,14 +91,13 @@ class _GroupWidgetState extends State<GroupWidget> {
             ),
           ),
       ],
-      footer: InkWell(
-        onTap: () {},
+      footer: GestureDetector(
+        onTap: widget.onAddPlayer,
         child: Container(
           height: 80,
-          margin: const EdgeInsets.only(
-            bottom: 8,
-            left: 16,
-            right: 16,
+          margin: const EdgeInsets.symmetric(
+            vertical: 5,
+            horizontal: 10,
           ),
           child: Card(
             child: Center(

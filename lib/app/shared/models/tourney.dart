@@ -106,6 +106,11 @@ class PlayerModel {
       goalsSuffered: data['goalsSuffered'] ?? 0,
     );
   }
+
+  @override
+  String toString() {
+    return '\nPlayerModel(\n playerName: $playerName,\n teamName: $teamName,\n points: $points,\n wins: $wins,\n loses: $loses,\n ties: $ties,\n goalsMade: $goalsMade,\n goalsSuffered: $goalsSuffered\n)';
+  }
 }
 
 class MatchModel {

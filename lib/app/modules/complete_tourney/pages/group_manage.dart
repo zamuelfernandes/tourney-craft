@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:tourney_craft/app/modules/complete_tourney/widgets/group_widget.dart';
 import 'package:tourney_craft/app/shared/components/base_app_bar.dart';
 import 'package:tourney_craft/app/shared/themes/themes.dart';
 
 import '../../../shared/models/tourney.dart';
 import '../cubit/complete_tourney_cubit.dart';
+import '../cubit/complete_tourney_state.dart';
 
 class GroupManagePage extends StatefulWidget {
   final CompleteTourneyCubit cubit;
@@ -26,14 +28,10 @@ class GroupManagePage extends StatefulWidget {
 
 class _GroupManagePageState extends State<GroupManagePage> {
   int selectedGroup = -1;
-  int selectedBusinessId = -1;
-
-  List<List<PlayerModel>> groupsList = [];
 
   @override
   void initState() {
     selectedGroup = widget.selectedGroup;
-    groupsList = List.generate(widget.groups.length, (index) => []);
     super.initState();
   }
 
@@ -41,71 +39,114 @@ class _GroupManagePageState extends State<GroupManagePage> {
   Widget build(BuildContext context) {
     final sizeOf = MediaQuery.sizeOf(context);
     return Scaffold(
-      appBar: BaseAppBar(title: 'Organizar Grupos'),
-      body: Column(
-        children: [
-          const SizedBox(height: 15),
-          Card(
-            elevation: 5,
-            surfaceTintColor: AppColors.white,
-            child: Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: DropdownButton<int>(
-                underline: const SizedBox(),
-                borderRadius: BorderRadius.circular(5),
-                value: selectedGroup,
-                items: widget.groups.map((int group) {
-                  return DropdownMenuItem<int>(
-                    value: group,
-                    child: Text('Grupo $group'),
-                  );
-                }).toList(),
-                onChanged: (int? value) {
-                  if (value != null) {
-                    setState(() {
-                      selectedGroup = value;
-                    });
-                    //   _cubit.filter(
-                    //   books: books,
-                    //   selectedDate: DateTime(
-                    //     DateTime.now().year,
-                    //     state.selectedMonth!,
-                    //   ),
-                    //   selectedBusinessId: i,
-                    // );
-                  }
-                },
-              ),
-            ),
-          ),
-          const SizedBox(height: 15),
-          Container(
-            height: sizeOf.height * 0.7,
-            margin: EdgeInsets.symmetric(horizontal: 15),
-            decoration: BoxDecoration(
-              border: Border.all(
-                color: AppColors.secondaryBlack,
-                width: 2,
-              ),
-              borderRadius: BorderRadius.circular(15),
-              color: Colors.white,
-              boxShadow: [
-                BoxShadow(
-                  color: AppColors.black.withOpacity(.2),
-                  blurRadius: 8,
-                  spreadRadius: 5,
+        appBar: BaseAppBar(title: 'Organizar Grupos'),
+        body: BlocConsumer<CompleteTourneyCubit, CompleteTourneyState>(
+          bloc: widget.cubit,
+          listener: (context, state) {
+            if (state.isSuccess) {
+              //faz algo
+            }
+
+            if (state.isError) {
+              //faz algo
+            }
+          },
+          builder: (context, state) {
+            return Column(
+              children: [
+                const SizedBox(height: 15),
+                Card(
+                  elevation: 5,
+                  surfaceTintColor: AppColors.white,
+                  child: Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: DropdownButton<int>(
+                      underline: const SizedBox(),
+                      borderRadius: BorderRadius.circular(5),
+                      value: selectedGroup,
+                      items: widget.groups.map((int group) {
+                        return DropdownMenuItem<int>(
+                          value: group,
+                          child: Text('Grupo $group'),
+                        );
+                      }).toList(),
+                      onChanged: (int? value) {
+                        if (value != null) {
+                          setState(() {
+                            selectedGroup = value;
+                          });
+                        }
+                      },
+                    ),
+                  ),
+                ),
+                const SizedBox(height: 15),
+                Container(
+                  height: sizeOf.height * 0.6,
+                  margin: EdgeInsets.symmetric(horizontal: 15),
+                  decoration: BoxDecoration(
+                    border: Border.all(
+                      color: AppColors.secondaryBlack,
+                      width: 2,
+                    ),
+                    borderRadius: BorderRadius.circular(15),
+                    color: Colors.white,
+                    boxShadow: [
+                      BoxShadow(
+                        color: AppColors.black.withOpacity(.2),
+                        blurRadius: 8,
+                        spreadRadius: 5,
+                      ),
+                    ],
+                  ),
+                  child: state.isLoading
+                      ? const Center(child: CircularProgressIndicator())
+                      : GroupWidget(
+                          playersList: state.groupsList[selectedGroup - 1],
+                          onAddPlayer: () {
+                            List<PlayerModel> avaliablePlayers = widget
+                                .playersList
+                                .where(
+                                  (player) => !state.groupsList
+                                      .any((group) => group.contains(player)),
+                                )
+                                .toList();
+
+                            widget.cubit.addPlayersDialog(
+                              context,
+                              players: avaliablePlayers,
+                              selectedGroup: selectedGroup,
+                            );
+                          },
+                          onTapRemove: () {
+                            widget.cubit.removePlayer(
+                              context,
+                              players: state.groupsList[selectedGroup - 1],
+                              selectedGroup: selectedGroup,
+                            );
+                          },
+                        ),
+                ),
+                const SizedBox(height: 25),
+                SizedBox(
+                  width: sizeOf.width * .55,
+                  height: sizeOf.height * .08,
+                  child: ElevatedButton(
+                    onPressed: () {
+                      print(state.groupsList);
+                    },
+                    child: Padding(
+                      padding: const EdgeInsets.all(12),
+                      child: Text(
+                        'Confirmar Grupos'.toUpperCase(),
+                        textAlign: TextAlign.center,
+                      ),
+                    ),
+                  ),
                 ),
               ],
-            ),
-            child: GroupWidget(
-              playersList: groupsList[selectedGroup - 1],
-              onAddPlayer: () {
-                print('Adicionar jogador');
-              },
-            ),
-          )
-        ],
-      ),
-    );
+            );
+          },
+        ));
   }
 }

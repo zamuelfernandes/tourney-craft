@@ -121,10 +121,17 @@ class _CompleteTourneyPageState extends State<CompleteTourneyPage> {
                                       'Informe uma quantidade\nde grupos válida',
                                       AppColors.secondaryBlack,
                                     );
+                                  } else if (int.parse(groupQuantEC.text) >
+                                      state.tourney!.players.length) {
+                                    BaseBottomMessage.showMessage(
+                                      context,
+                                      'Quantidade de grupos maior que\na quantidade de jogadores',
+                                      AppColors.secondaryBlack,
+                                    );
                                   } else {
                                     BaseBottomMessage.showMessage(
                                       context,
-                                      'Quantidade de grupos\nconfigurada',
+                                      'Quantidade de grupos\nconfigurada com sucesso',
                                       AppColors.secondaryBlack,
                                     );
 
@@ -160,7 +167,7 @@ class _CompleteTourneyPageState extends State<CompleteTourneyPage> {
                                   );
                                 } else {
                                   final groupsQuant = List<int>.generate(
-                                    int.parse(groupQuantEC.text),
+                                    state.groupQuant,
                                     (index) => index + 1,
                                   );
 

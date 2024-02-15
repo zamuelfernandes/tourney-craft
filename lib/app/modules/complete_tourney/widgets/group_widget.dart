@@ -6,12 +6,15 @@ import 'package:tourney_craft/app/shared/themes/themes.dart';
 
 class GroupWidget extends StatefulWidget {
   final List<PlayerModel> playersList;
+
   final void Function()? onAddPlayer;
+  final void Function()? onTapRemove;
 
   const GroupWidget({
     Key? key,
     required this.playersList,
     this.onAddPlayer,
+    this.onTapRemove,
   }) : super(key: key);
 
   @override
@@ -21,20 +24,18 @@ class GroupWidget extends StatefulWidget {
 class _GroupWidgetState extends State<GroupWidget> {
   @override
   Widget build(BuildContext context) {
-    final players = widget.playersList;
-
     return ReorderableListView(
       onReorder: (oldIndex, newIndex) {
         setState(() {
           if (newIndex > oldIndex) {
             newIndex -= 1;
           }
-          final player = players.removeAt(oldIndex);
-          players.insert(newIndex, player);
+          final player = widget.playersList.removeAt(oldIndex);
+          widget.playersList.insert(newIndex, player);
         });
       },
       children: [
-        for (final player in players)
+        for (final player in widget.playersList)
           Container(
             key: UniqueKey(),
             height: 80,
@@ -74,7 +75,9 @@ class _GroupWidgetState extends State<GroupWidget> {
                   height: 30,
                   child: ElevatedButton(
                     onPressed: () {
-                      //ADD PLAYER
+                      setState(() {
+                        widget.playersList.remove(player);
+                      });
                     },
                     child: Icon(
                       Icons.close_sharp,

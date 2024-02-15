@@ -14,6 +14,7 @@ class CompleteTourneyState extends Equatable {
   final TourneyModel? tourney;
   final bool ready;
   final int groupQuant;
+  final List<List<PlayerModel>> groupsList;
 
   //Estados iniciais da tela
   const CompleteTourneyState({
@@ -24,6 +25,7 @@ class CompleteTourneyState extends Equatable {
     this.tourney,
     this.ready = false,
     this.groupQuant = 0,
+    this.groupsList = const [],
   });
 
   CompleteTourneyState copyWith({
@@ -34,6 +36,7 @@ class CompleteTourneyState extends Equatable {
     TourneyModel? tourney,
     bool? ready,
     int? groupQuant,
+    List<List<PlayerModel>>? groupsList,
   }) {
     return CompleteTourneyState(
       isLoading: isLoading ?? this.isLoading,
@@ -43,6 +46,7 @@ class CompleteTourneyState extends Equatable {
       tourney: tourney ?? this.tourney,
       ready: ready ?? this.ready,
       groupQuant: groupQuant ?? this.groupQuant,
+      groupsList: groupsList ?? this.groupsList,
     );
   }
 
@@ -55,5 +59,6 @@ class CompleteTourneyState extends Equatable {
         tourney,
         ready,
         groupQuant,
+        groupsList,
       ];
 }

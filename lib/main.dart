@@ -5,10 +5,13 @@ import 'package:tourney_craft/firebase_options.dart';
 
 import 'app/app_module.dart';
 import 'app/app_widget.dart';
+import 'app/shared/services/tourney_repository.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
+
+  await TourneyRepository().printInternalData();
 
   runApp(
     ModularApp(

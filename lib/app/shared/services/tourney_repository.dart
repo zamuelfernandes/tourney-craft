@@ -25,6 +25,18 @@ class TourneyRepository {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     await prefs.remove(key);
   }
+
+  Future<void> printInternalData() async {
+    print(
+      'CODE: ${await TourneyRepository().getValue(Constants.tourneyCodeFolder)}',
+    );
+    print(
+      'PASSWORD: ${await TourneyRepository().getValue(Constants.admPasswordFolder)}',
+    );
+    print(
+      'STATUS: ${await TourneyRepository().getValue(Constants.tourneyStatusFolder)}',
+    );
+  }
 }
 
 // Exemplo de uso

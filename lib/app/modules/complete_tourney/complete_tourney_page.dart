@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:tourney_craft/app/modules/complete_tourney/pages/player_manage.dart';
 import 'package:tourney_craft/app/shared/components/base_bottom_message.dart';
 import 'package:tourney_craft/app/shared/themes/themes.dart';
 import 'package:validatorless/validatorless.dart';
@@ -138,6 +140,9 @@ class _CompleteTourneyPageState extends State<CompleteTourneyPage> {
                                     _cubit.setGroupQuant(
                                       number: int.parse(groupQuantEC.text),
                                     );
+
+                                    SystemChannels.textInput
+                                        .invokeMethod('TextInput.hide');
                                   }
                                 },
                                 icon: Card(
@@ -195,7 +200,13 @@ class _CompleteTourneyPageState extends State<CompleteTourneyPage> {
                             width: sizeOf.width * .55,
                             height: sizeOf.height * .08,
                             child: ElevatedButton(
-                              onPressed: () {},
+                              onPressed: () {
+                                Navigator.of(context).push(MaterialPageRoute(
+                                  builder: (context) => PlayerManagePage(
+                                    cubit: _cubit,
+                                  ),
+                                ));
+                              },
                               child: Padding(
                                 padding: const EdgeInsets.all(12),
                                 child: Text(
@@ -256,13 +267,6 @@ class _CompleteTourneyPageState extends State<CompleteTourneyPage> {
           return Container();
         },
       ),
-      // floatingActionButton: FloatingActionButton.extended(
-      //   onPressed: () {
-      //     //faz algo
-      //   },
-      //   label: Text('Add Player'),
-      //   icon: Icon(Icons.add),
-      // ),
     );
   }
 }

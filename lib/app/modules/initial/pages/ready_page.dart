@@ -117,7 +117,7 @@ class _ReadyPageState extends State<ReadyPage> {
                                 'Senha de ADM'.toUpperCase(),
                                 style: TextStyle(
                                   color: isAdm
-                                      ? AppColors.darkPrimary
+                                      ? AppColors.black
                                       : AppColors.lightPrimary,
                                 ),
                               ),
@@ -129,17 +129,24 @@ class _ReadyPageState extends State<ReadyPage> {
                             ],
                           ),
                           const SizedBox(height: 80),
-                          SizedBox(
-                            width: sizeOf.width * .7,
-                            child: CheckboxListTile.adaptive(
-                              value: isAdm,
-                              onChanged: (value) {
-                                setState(() {
-                                  isAdm = value!;
-                                });
-                              },
-                              activeColor: AppColors.secondaryBlack,
-                              title: const Text('Sou Administrador'),
+                          Center(
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Checkbox.adaptive(
+                                  value: isAdm,
+                                  onChanged: (value) {
+                                    setState(() {
+                                      isAdm = value!;
+                                    });
+                                  },
+                                ),
+                                Text(
+                                  'Sou Administrador',
+                                  style: AppTextStyle.subtitleStyle
+                                      .copyWith(fontSize: 14),
+                                ),
+                              ],
                             ),
                           ),
                           Hero(

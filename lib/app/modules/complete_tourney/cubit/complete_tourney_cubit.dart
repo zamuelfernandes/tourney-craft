@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:tourney_craft/app/shared/services/tourney_repository.dart';
 import 'package:tourney_craft/app/shared/themes/themes.dart';
+import 'package:validatorless/validatorless.dart';
+import '../../../shared/components/base_bottom_message.dart';
+import '../../../shared/constants/constants.dart';
 import '../../../shared/models/tourney.dart';
 import '../../../shared/services/firestore.dart';
 import 'complete_tourney_state.dart';
@@ -246,5 +250,120 @@ class CompleteTourneyCubit extends Cubit<CompleteTourneyState> {
         );
       },
     );
+  }
+
+  void registerPlayerDialog(BuildContext context) async {
+    final formKey = GlobalKey<FormState>();
+    final playerNameEC = TextEditingController();
+    final teamEC = TextEditingController();
+
+    showDialog(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          title: Text(
+            'Cadastrar Jogador'.toUpperCase(),
+            textAlign: TextAlign.center,
+            style: AppTextStyle.titleSmallStyle.copyWith(height: 1),
+          ),
+          content: SizedBox(
+            height: MediaQuery.sizeOf(context).height * 0.30,
+            width: MediaQuery.sizeOf(context).width * 0.9,
+            child: Form(
+              key: formKey,
+              child: Column(
+                children: [
+                  const SizedBox(height: 25),
+                  TextFormField(
+                    controller: playerNameEC,
+                    validator: Validatorless.required('Campo obrigatório'),
+                    decoration: InputDecoration(
+                      label: Text('Nome do Jogador:'.toUpperCase()),
+                    ),
+                  ),
+                  const SizedBox(height: 45),
+                  TextFormField(
+                    controller: teamEC,
+                    validator: Validatorless.required('Campo obrigatório'),
+                    decoration: InputDecoration(
+                      label: Text('Nome do Time:'.toUpperCase()),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
+          actionsAlignment: MainAxisAlignment.center,
+          actions: <Widget>[
+            TextButton(
+              onPressed: () async {
+                final valid = formKey.currentState?.validate() ?? false;
+                final tourneyId = await TourneyRepository().getValue(
+                  Constants.tourneyCodeFolder,
+                );
+
+                if (valid) {
+                  Navigator.pop(context);
+
+                  final result = await registerPlayer(
+                    playerName: playerNameEC.text,
+                    teamName: teamEC.text,
+                    tourneyId: tourneyId!,
+                  );
+
+                  BaseBottomMessage.showMessage(
+                    context,
+                    result,
+                    AppColors.secondaryBlack,
+                  );
+                }
+              },
+              child: Text(
+                'Cadastrar',
+                style: AppTextStyle.subtitleStyle
+                    .copyWith(height: 1, fontSize: 16),
+              ),
+            ),
+            TextButton(
+              onPressed: () {
+                Navigator.pop(context);
+              },
+              child: Text(
+                'Sair',
+                style: AppTextStyle.subtitleStyle
+                    .copyWith(height: 1, fontSize: 16),
+              ),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  Future<String> registerPlayer({
+    required String playerName,
+    required String teamName,
+    required String tourneyId,
+  }) async {
+    emit(state.copyWith(isLoading: true));
+
+    try {
+      final result = await _firestoreService.putPlayerInTourney(
+        playerName: playerName,
+        teamName: teamName,
+        tourneyId: tourneyId,
+      );
+
+      getTourneyById(tourneyId: tourneyId);
+
+      return result;
+    } catch (e) {
+      emit(state.copyWith(
+        isLoading: false,
+        isError: true,
+        message: 'Erro ao cadastrar jogador: ${e.toString()}',
+      ));
+      return 'Erro ao cadastrar jogador: ${e.toString()}';
+    }
   }
 }

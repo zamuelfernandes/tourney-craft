@@ -17,12 +17,14 @@ ThemeData get darkTheme => lightTheme;
 //     );
 
 final class AppColors {
-  static const Color lightPrimary = Color(0xFFA5A5A5);
-  static const Color darkPrimary = Color(0xFF696969);
-  static const Color black = Colors.black;
-  static const Color secondaryBlack = Color(0xFF333333);
-  static const Color white = Colors.white;
-  static const Color transparent = Colors.transparent;
+  static const white = Colors.white;
+  static const black = Colors.black;
+  static const transparent = Colors.transparent;
+  static const lightPrimary = Color(0xFFA5A5A5);
+  static const darkPrimary = Color(0xFF696969);
+  static const secondaryBlack = Color(0xFF333333);
+  static const errorColor = Colors.red;
+  static const checkColor = Colors.green;
 }
 
 OutlineInputBorder get _defautInputBorder => OutlineInputBorder(

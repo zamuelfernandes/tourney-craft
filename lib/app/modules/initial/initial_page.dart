@@ -120,16 +120,17 @@ class _InitialPageState extends State<InitialPage> {
                 child: Text(
                   'Já estou em um torneio'.toUpperCase(),
                   style: AppTextStyle.subtitleStyle.copyWith(
-                    fontSize: 12,
-                    color: Colors.blue,
+                    fontSize: 14,
+                    color: AppColors.checkColor,
                     fontWeight: FontWeight.bold,
                     decoration: TextDecoration.underline,
+                    decorationColor: AppColors.checkColor,
                   ),
                 ),
               ),
               Align(
                 alignment: AlignmentDirectional.bottomCenter,
-                child: Text('Tourney Craft © 2021'),
+                child: Text('Tourney Craft © 2024'),
               ),
             ],
           ),

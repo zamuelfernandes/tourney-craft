@@ -136,6 +136,7 @@ class _GroupManagePageState extends State<GroupManagePage> {
                     onPressed: () async {
                       print(state.groupsList
                           .map((e) => e.map((e) => e.playerName)));
+
                       final result = await widget.cubit.registerGroups(
                         groupsList: state.groupsList,
                       );

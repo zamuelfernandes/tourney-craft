@@ -150,12 +150,19 @@ class FirestoreService {
 
   Future<String> updateTourneyGroups({
     required String tourneyId,
-    required List<List<PlayerModel>> groups,
+    required List<List<String>> groups,
   }) async {
     try {
-      await _tourneyCollection.doc(tourneyId).update({
-        'groups': groups.map((grupo) => grupo.map((player) => null)).toList(),
-      }).whenComplete(() {
+      Map<String, dynamic> groupsToInsert = {};
+
+      for (int i = 0; i < groups.length; i++) {
+        groupsToInsert['group${i + 1}'] = groups[i];
+      }
+
+      await _tourneyCollection
+          .doc(tourneyId)
+          .update(groupsToInsert)
+          .whenComplete(() {
         hasError = false;
       });
 

@@ -263,9 +263,15 @@ class CompleteTourneyCubit extends Cubit<CompleteTourneyState> {
       Constants.tourneyCodeFolder,
     );
 
+    final groups = groupsList.map((group) {
+      return group.map((player) {
+        return player.id;
+      }).toList();
+    }).toList();
+
     try {
       final result = await _firestoreService.updateTourneyGroups(
-        groups: groupsList,
+        groups: groups,
         tourneyId: tourneyId!,
       );
 

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:tourney_craft/app/shared/components/base_bottom_message.dart';
 import 'package:tourney_craft/app/shared/themes/themes.dart';
 
 import '../../../shared/components/base_app_bar.dart';
@@ -23,7 +24,7 @@ class _PlayerManagePageState extends State<PlayerManagePage> {
     final sizeOf = MediaQuery.of(context).size;
 
     return Scaffold(
-      appBar: BaseAppBar(title: 'Organizar Grupos'),
+      appBar: BaseAppBar(title: 'Gerênciar Jogadores'),
       body: BlocConsumer<CompleteTourneyCubit, CompleteTourneyState>(
         bloc: widget.cubit,
         listener: (context, state) {
@@ -48,7 +49,7 @@ class _PlayerManagePageState extends State<PlayerManagePage> {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         Text(
-                          'Finalizar gerência\nde Jogadores'.toUpperCase(),
+                          'Finalizar cadastro\nde Jogadores'.toUpperCase(),
                           textAlign: TextAlign.center,
                           style: TextStyle(
                             fontSize: 14,
@@ -88,7 +89,13 @@ class _PlayerManagePageState extends State<PlayerManagePage> {
                                   ),
                                   trailing: IconButton(
                                     icon: Icon(Icons.delete),
-                                    onPressed: () {},
+                                    onPressed: () {
+                                      BaseBottomMessage.showMessage(
+                                        context,
+                                        'Ainda não implementado',
+                                        AppColors.secondaryBlack,
+                                      );
+                                    },
                                   ),
                                 ),
                               );

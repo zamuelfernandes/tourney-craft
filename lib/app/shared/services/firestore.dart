@@ -1,9 +1,12 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:tourney_craft/app/shared/models/tourney.dart';
 
 class FirestoreService {
   //get data from firestore
   final CollectionReference _tourneyCollection =
       FirebaseFirestore.instance.collection('tourneys');
+
+  bool hasError = true;
 
   //CREATE TOURNEY
   Future<({String message, String tourneyId})> createTourney({
@@ -16,7 +19,6 @@ class FirestoreService {
       DocumentReference documentReference = await _tourneyCollection.add(
         {
           'tourneyName': tourneyName,
-          'players': [],
           'groups': [],
           'playersNumber': playersNumber,
           'status': 0,
@@ -84,27 +86,44 @@ class FirestoreService {
     }
   }
 
+  Future<List<PlayerModel>> getPlayersList({required String tourneyId}) async {
+    try {
+      final playersList = await _tourneyCollection
+          .doc(tourneyId)
+          .collection('playersList')
+          .get();
+
+      return playersList.docs
+          .map((player) => PlayerModel.fromMap(player.id, player.data()))
+          .toList();
+    } catch (e) {
+      print(e);
+      return [];
+    }
+  }
+
   //UPDATE TOURNEY
   Future<String> putPlayerInTourney({
     required String playerName,
     required String teamName,
     required String tourneyId,
   }) async {
-    bool hasError = true;
     try {
-      await _tourneyCollection.doc(tourneyId).update({
-        'players': FieldValue.arrayUnion([
-          {
-            'playerName': playerName,
-            'teamName': teamName,
-            'points': 0,
-            'wins': 0,
-            'loses': 0,
-            'ties': 0,
-            'goalsMade': 0,
-            'goalsSuffered': 0,
-          }
-        ])
+      final doc = await _tourneyCollection.doc(tourneyId).get();
+
+      if (!doc.exists) {
+        return 'Torneio não encontrado!';
+      }
+
+      await _tourneyCollection.doc(tourneyId).collection('playersList').add({
+        'playerName': playerName,
+        'teamName': teamName,
+        'points': 0,
+        'wins': 0,
+        'loses': 0,
+        'ties': 0,
+        'goalsMade': 0,
+        'goalsSuffered': 0,
       }).whenComplete(() {
         hasError = false;
       });
@@ -129,6 +148,27 @@ class FirestoreService {
     });
   }
 
+  Future<String> updateTourneyGroups({
+    required String tourneyId,
+    required List<List<PlayerModel>> groups,
+  }) async {
+    try {
+      await _tourneyCollection.doc(tourneyId).update({
+        'groups': groups.map((grupo) => grupo.map((player) => null)).toList(),
+      }).whenComplete(() {
+        hasError = false;
+      });
+
+      if (hasError) {
+        return 'Erro ao cadatrar Grupos!';
+      } else {
+        return 'Grupos cadastrados com Sucesso!';
+      }
+    } catch (e) {
+      print(e);
+      return e.toString();
+    }
+  }
   //DELETE TOURNEY
 
   //AUXILIARY METHODS
@@ -139,6 +179,19 @@ class FirestoreService {
     } catch (e) {
       print('Erro ao verificar a existência do ID: $e');
       return false;
+    }
+  }
+
+  Future<int> contarDocumentos(String docId, String collectionName) async {
+    try {
+      QuerySnapshot querySnapshot =
+          await _tourneyCollection.doc(docId).collection(collectionName).get();
+
+      // Retorna a quantidade de documentos na coleção
+      return querySnapshot.size;
+    } catch (e) {
+      print('Erro ao contar documentos: $e');
+      return -1; // Retorna -1 em caso de erro
     }
   }
 }

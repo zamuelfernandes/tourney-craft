@@ -80,21 +80,23 @@ class InitialCubit extends Cubit<InitialState> {
 
       int playersQuant = tourney['playersNumber'];
 
-      if (tourney['players'].length == playersQuant - 1) {
-        await _firestoreService.updateTourneyStatus(
-          tourneyId: tourneyId,
-          status: 1,
-        );
-      }
+      final firebasePlayerQuant =
+          await _firestoreService.contarDocumentos(tourneyId, 'playersList');
 
       if (await _firestoreService.doesIdExist(documentId: tourneyId)) {
-        if (tourney['players'] == null ||
-            tourney['players'].length < playersQuant) {
+        if (firebasePlayerQuant < playersQuant) {
           final result = await _firestoreService.putPlayerInTourney(
             playerName: playerName,
             teamName: teamName,
             tourneyId: tourneyId,
           );
+
+          if (firebasePlayerQuant == playersQuant - 1) {
+            await _firestoreService.updateTourneyStatus(
+              tourneyId: tourneyId,
+              status: 1,
+            );
+          }
 
           emit(state.copyWith(isLoading: false));
           return result;

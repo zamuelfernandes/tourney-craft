@@ -34,7 +34,7 @@ class _CompleteTourneyPageState extends State<CompleteTourneyPage> {
   @override
   void initState() {
     _cubit = CompleteTourneyCubit()
-      ..getTourneyById(
+      ..loadData(
         tourneyId: widget.tourneyId,
       );
     super.initState();

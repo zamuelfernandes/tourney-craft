@@ -13,7 +13,7 @@ class CompleteTourneyCubit extends Cubit<CompleteTourneyState> {
   CompleteTourneyCubit() : super(const CompleteTourneyState());
   final FirestoreService _firestoreService = FirestoreService();
 
-  Future<void> getTourneyById({
+  Future<void> loadData({
     required String tourneyId,
   }) async {
     emit(state.copyWith(isLoading: true));
@@ -24,12 +24,15 @@ class CompleteTourneyCubit extends Cubit<CompleteTourneyState> {
 
       final tourney = TourneyModel.fromFirestore(tourneyData);
 
+      final players =
+          await _firestoreService.getPlayersList(tourneyId: tourneyId);
+
       //SUCCESS STATE
       emit(state.copyWith(
         isLoading: false,
         isSuccess: true,
         message: 'Success detected',
-        tourney: tourney,
+        tourney: tourney.copyWith(players: players),
       ));
     } catch (e) {
       //ERROR STATE
@@ -252,6 +255,33 @@ class CompleteTourneyCubit extends Cubit<CompleteTourneyState> {
     );
   }
 
+  Future<String> registerGroups({
+    required List<List<PlayerModel>> groupsList,
+  }) async {
+    emit(state.copyWith(isLoading: true));
+    final tourneyId = await TourneyRepository().getValue(
+      Constants.tourneyCodeFolder,
+    );
+
+    try {
+      final result = await _firestoreService.updateTourneyGroups(
+        groups: groupsList,
+        tourneyId: tourneyId!,
+      );
+
+      loadData(tourneyId: tourneyId);
+
+      return result;
+    } catch (e) {
+      emit(state.copyWith(
+        isLoading: false,
+        isError: true,
+        message: 'Erro ao cadastrar grupos: ${e.toString()}',
+      ));
+      return 'Erro ao cadastrar grupos: ${e.toString()}';
+    }
+  }
+
   void registerPlayerDialog(BuildContext context) async {
     final formKey = GlobalKey<FormState>();
     final playerNameEC = TextEditingController();
@@ -354,7 +384,7 @@ class CompleteTourneyCubit extends Cubit<CompleteTourneyState> {
         tourneyId: tourneyId,
       );
 
-      getTourneyById(tourneyId: tourneyId);
+      loadData(tourneyId: tourneyId);
 
       return result;
     } catch (e) {

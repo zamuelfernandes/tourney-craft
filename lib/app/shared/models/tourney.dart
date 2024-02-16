@@ -24,15 +24,9 @@ class TourneyModel {
   });
 
   factory TourneyModel.fromFirestore(Map<String, dynamic> data) {
-    List<PlayerModel> playersList = (data['players'] as List<dynamic>?)
-            ?.map((player) => PlayerModel.fromMap(player))
-            .toList() ??
-        [];
-
     List<GroupModel> groupsList = (data['groups'] as List<dynamic>?)
             ?.map((group) => GroupModel(
-                  players: List<PlayerModel>.from(group['players']
-                      .map((player) => PlayerModel.fromMap(player))),
+                  playersIds: group['playersIds'],
                   matches: List<MatchModel>.from(group['matches']
                       .map((match) => MatchModel.fromMap(match))),
                 ))
@@ -60,7 +54,7 @@ class TourneyModel {
 
     return TourneyModel(
       tourneyName: data['tourneyName'] ?? '',
-      players: playersList,
+      players: [],
       groups: groupsList,
       playersNumber: data['playersNumber'] ?? 0,
       status: data['status'] ?? 0,
@@ -70,9 +64,32 @@ class TourneyModel {
       timestamp: DateTime.parse(data['dateTime'].toDate().toString()),
     );
   }
+
+  TourneyModel copyWith({
+    String? tourneyName,
+    List<PlayerModel>? players,
+    List<GroupModel>? groups,
+    int? playersNumber,
+    int? status,
+    int? adminPassword,
+    List<MatchModel>? matches,
+    DateTime? timestamp,
+  }) {
+    return TourneyModel(
+      tourneyName: tourneyName ?? this.tourneyName,
+      players: players ?? this.players,
+      groups: groups ?? this.groups,
+      playersNumber: playersNumber ?? this.playersNumber,
+      status: status ?? this.status,
+      adminPassword: adminPassword ?? this.adminPassword,
+      matches: matches ?? this.matches,
+      timestamp: timestamp ?? this.timestamp,
+    );
+  }
 }
 
 class PlayerModel {
+  String id;
   String playerName;
   String teamName;
   int points;
@@ -83,6 +100,7 @@ class PlayerModel {
   int goalsSuffered;
 
   PlayerModel({
+    required this.id,
     required this.playerName,
     required this.teamName,
     required this.points,
@@ -94,8 +112,9 @@ class PlayerModel {
   });
 
   // Método factory para converter dados de um mapa para uma instância de PlayerModel
-  factory PlayerModel.fromMap(Map<String, dynamic> data) {
+  factory PlayerModel.fromMap(String id, Map<String, dynamic> data) {
     return PlayerModel(
+      id: id,
       playerName: data['playerName'] ?? '',
       teamName: data['teamName'] ?? '',
       points: data['points'] ?? 0,
@@ -114,14 +133,14 @@ class PlayerModel {
 }
 
 class MatchModel {
-  PlayerModel player1;
-  PlayerModel player2;
+  String player1Id;
+  String player2Id;
   int player1Goals;
   int player2Goals;
 
   MatchModel({
-    required this.player1,
-    required this.player2,
+    required this.player1Id,
+    required this.player2Id,
     required this.player1Goals,
     required this.player2Goals,
   });
@@ -129,8 +148,8 @@ class MatchModel {
   // Método factory para converter dados de um mapa para uma instância de MatchModel
   factory MatchModel.fromMap(Map<String, dynamic> data) {
     return MatchModel(
-      player1: PlayerModel.fromMap(data['player1']),
-      player2: PlayerModel.fromMap(data['player2']),
+      player1Id: data['player1Id'] ?? '',
+      player2Id: data['player2Id'] ?? '',
       player1Goals: data['player1Goals'] ?? 0,
       player2Goals: data['player2Goals'] ?? 0,
     );
@@ -138,11 +157,11 @@ class MatchModel {
 }
 
 class GroupModel {
-  List<PlayerModel> players;
+  List<String> playersIds;
   List<MatchModel> matches;
 
   GroupModel({
-    required this.players,
+    required this.playersIds,
     required this.matches,
   });
 }

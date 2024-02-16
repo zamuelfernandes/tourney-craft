@@ -4,6 +4,7 @@ import 'package:tourney_craft/app/modules/complete_tourney/widgets/group_widget.
 import 'package:tourney_craft/app/shared/components/base_app_bar.dart';
 import 'package:tourney_craft/app/shared/themes/themes.dart';
 
+import '../../../shared/components/base_bottom_message.dart';
 import '../../../shared/models/tourney.dart';
 import '../cubit/complete_tourney_cubit.dart';
 import '../cubit/complete_tourney_state.dart';
@@ -132,8 +133,18 @@ class _GroupManagePageState extends State<GroupManagePage> {
                   width: sizeOf.width * .55,
                   height: sizeOf.height * .08,
                   child: ElevatedButton(
-                    onPressed: () {
-                      print(state.groupsList);
+                    onPressed: () async {
+                      print(state.groupsList
+                          .map((e) => e.map((e) => e.playerName)));
+                      final result = await widget.cubit.registerGroups(
+                        groupsList: state.groupsList,
+                      );
+
+                      BaseBottomMessage.showMessage(
+                        context,
+                        result,
+                        AppColors.secondaryBlack,
+                      );
                     },
                     child: Padding(
                       padding: const EdgeInsets.all(12),

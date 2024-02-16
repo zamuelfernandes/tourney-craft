@@ -154,6 +154,11 @@ class MatchModel {
       player2Goals: data['player2Goals'] ?? 0,
     );
   }
+
+  @override
+  String toString() {
+    return '\nMatchModel(player1Id: $player1Id, player2Id: $player2Id, player1Goals: $player1Goals, player2Goals: $player2Goals)';
+  }
 }
 
 class GroupModel {

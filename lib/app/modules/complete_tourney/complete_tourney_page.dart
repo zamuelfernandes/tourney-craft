@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:tourney_craft/app/modules/complete_tourney/pages/matches_manage.dart';
 import 'package:tourney_craft/app/modules/complete_tourney/pages/player_manage.dart';
 import 'package:tourney_craft/app/shared/components/base_bottom_message.dart';
 import 'package:tourney_craft/app/shared/themes/themes.dart';
@@ -222,9 +223,16 @@ class _CompleteTourneyPageState extends State<CompleteTourneyPage> {
                             height: sizeOf.height * .08,
                             child: ElevatedButton(
                               onPressed: () {
+                                final groupsQuant = List<int>.generate(
+                                  state.groupQuant,
+                                  (index) => index + 1,
+                                );
+
                                 Navigator.of(context).push(MaterialPageRoute(
-                                  builder: (context) => PlayerManagePage(
+                                  builder: (context) => MatchesManagePage(
                                     cubit: _cubit,
+                                    groups: groupsQuant,
+                                    selectedGroup: groupsQuant.first,
                                   ),
                                 ));
                               },

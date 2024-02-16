@@ -54,7 +54,7 @@ class CompleteTourneyCubit extends Cubit<CompleteTourneyState> {
     ));
   }
 
-  void addPlayersDialog(
+  void addPlayersToGroupDialog(
     BuildContext context, {
     required List<PlayerModel> players,
     required int selectedGroup,
@@ -415,5 +415,39 @@ class CompleteTourneyCubit extends Cubit<CompleteTourneyState> {
       return true;
     }
     return false;
+  }
+
+  List<List<MatchModel>> generateMatches({required List<PlayerModel> players}) {
+    List<List<MatchModel>> allMatches = [];
+
+    for (int i = 0; i < players.length - 1; i++) {
+      for (int j = i + 1; j < players.length; j++) {
+        // Criar a partida de ida
+        MatchModel matchIn = MatchModel(
+          player1Goals: 0,
+          player2Goals: 0,
+          player1Id: players[i].id,
+          player2Id: players[j].id,
+        );
+
+        // Criar a partida de volta
+        MatchModel matchOut = MatchModel(
+          player1Goals: 0,
+          player2Goals: 0,
+          player1Id: players[j].id,
+          player2Id: players[i].id,
+        );
+        ;
+
+        // Adicionar as partidas à lista
+        allMatches.add([matchIn, matchOut]);
+      }
+    }
+
+    return allMatches;
+  }
+
+  PlayerModel pickPlayerById({required String id}) {
+    return state.tourney!.players.firstWhere((player) => player.id == id);
   }
 }

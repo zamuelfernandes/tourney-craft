@@ -402,4 +402,18 @@ class CompleteTourneyCubit extends Cubit<CompleteTourneyState> {
       return 'Erro ao cadastrar jogador: ${e.toString()}';
     }
   }
+
+  bool allReady() {
+    int playerInAGroup = 0;
+    for (var group in state.groupsList) {
+      for (var _ in group) {
+        playerInAGroup++;
+      }
+    }
+
+    if (playerInAGroup == state.tourney!.players.length) {
+      return true;
+    }
+    return false;
+  }
 }

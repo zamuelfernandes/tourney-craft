@@ -222,10 +222,41 @@ class _CompleteTourneyPageState extends State<CompleteTourneyPage> {
                             height: sizeOf.height * .08,
                             child: ElevatedButton(
                               onPressed: () {
-                                if (!state.ready) {
+                                Navigator.of(context).push(MaterialPageRoute(
+                                  builder: (context) => PlayerManagePage(
+                                    cubit: _cubit,
+                                  ),
+                                ));
+                              },
+                              child: Padding(
+                                padding: const EdgeInsets.all(12),
+                                child: Text(
+                                  'Ver Tabelamento'.toUpperCase(),
+                                  textAlign: TextAlign.center,
+                                ),
+                              ),
+                            ),
+                          ),
+                          const SizedBox(height: 30),
+                          SizedBox(
+                            width: sizeOf.width * .55,
+                            height: sizeOf.height * .08,
+                            child: ElevatedButton(
+                              onPressed: () {
+                                if (!_cubit.allReady()) {
                                   BaseBottomMessage.showMessage(
                                     context,
                                     'Configurações Faltantes',
+                                    AppColors.secondaryBlack,
+                                  );
+                                } else {
+                                  // _cubit.updateTourneyStatus(
+                                  //   tourneyId: tourney.tourneyId,
+                                  //   status: 1,
+                                  // );
+                                  BaseBottomMessage.showMessage(
+                                    context,
+                                    'Tudo Certo',
                                     AppColors.secondaryBlack,
                                   );
                                 }
@@ -234,12 +265,17 @@ class _CompleteTourneyPageState extends State<CompleteTourneyPage> {
                                 padding: const EdgeInsets.all(12),
                                 child: Text('Iniciar Torneio'.toUpperCase()),
                               ),
+                              style: ButtonStyle(
+                                backgroundColor: MaterialStateProperty.all(
+                                  AppColors.checkColor,
+                                ),
+                              ),
                             ),
                           ),
                         ],
                       ),
                       SizedBox(
-                        height: sizeOf.height * 0.15,
+                        height: sizeOf.height * 0.05,
                       ),
                       Text('Tourney Craft © 2024'),
                     ],

@@ -14,12 +14,12 @@ class FirestoreService {
     required int playersNumber,
     required int adminPassword,
   }) async {
-    bool hasError = true;
     try {
       DocumentReference documentReference = await _tourneyCollection.add(
         {
           'tourneyName': tourneyName,
-          'groups': [],
+          'groups': {},
+          'groupsQuantity': 0,
           'playersNumber': playersNumber,
           'status': 0,
           'adminPassword': adminPassword,
@@ -156,13 +156,15 @@ class FirestoreService {
       Map<String, dynamic> groupsToInsert = {};
 
       for (int i = 0; i < groups.length; i++) {
-        groupsToInsert['group${i + 1}'] = groups[i];
+        groupsToInsert['group${i + 1}'] = {
+          'matches': [],
+          'players': groups[i],
+        };
       }
 
       await _tourneyCollection
           .doc(tourneyId)
-          .update(groupsToInsert)
-          .whenComplete(() {
+          .update({'groups': groupsToInsert}).whenComplete(() {
         hasError = false;
       });
 
@@ -176,6 +178,16 @@ class FirestoreService {
       return e.toString();
     }
   }
+
+  Future<void> updateGroupsQuantity({
+    required String tourneyId,
+    required int groupsQuantity,
+  }) async {
+    await _tourneyCollection.doc(tourneyId).update({
+      'groupsQuantity': groupsQuantity,
+    });
+  }
+
   //DELETE TOURNEY
 
   //AUXILIARY METHODS

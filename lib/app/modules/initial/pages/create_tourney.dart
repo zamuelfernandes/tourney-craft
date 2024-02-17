@@ -152,7 +152,8 @@ class _CreateTourneyPageState extends State<CreateTourneyPage> {
                                       AppColors.secondaryBlack,
                                     );
                                   } else {
-                                    await widget.cubit.createTourney(
+                                    final result =
+                                        await widget.cubit.createTourney(
                                       tourneyName: tourneyNameEC.text,
                                       playersNumber:
                                           int.parse(playersNumberEC.text),
@@ -162,7 +163,7 @@ class _CreateTourneyPageState extends State<CreateTourneyPage> {
 
                                     BaseBottomMessage.showMessage(
                                       context,
-                                      state.message,
+                                      result,
                                       AppColors.secondaryBlack,
                                     );
                                   }

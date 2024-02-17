@@ -3,8 +3,9 @@
 class TourneyModel {
   String tourneyName;
   List<PlayerModel> players;
-  List<GroupModel> groups;
+  Map<String, GroupModel> groups;
   int playersNumber;
+  int groupsQuantity;
   int status;
   int adminPassword;
   List<MatchModel> matches;
@@ -16,6 +17,7 @@ class TourneyModel {
     required this.players,
     required this.groups,
     required this.playersNumber,
+    required this.groupsQuantity,
     required this.status,
     required this.adminPassword,
     required this.matches,
@@ -24,14 +26,28 @@ class TourneyModel {
   });
 
   factory TourneyModel.fromFirestore(Map<String, dynamic> data) {
-    List<GroupModel> groupsList = (data['groups'] as List<dynamic>?)
-            ?.map((group) => GroupModel(
-                  playersIds: group['playersIds'],
-                  matches: List<MatchModel>.from(group['matches']
-                      .map((match) => MatchModel.fromMap(match))),
-                ))
-            .toList() ??
-        [];
+    Map<String, GroupModel> groupsList = {};
+
+    (data['groups'] as Map<String, dynamic>?)?.forEach((key, value) {
+      List<String> playerIds = List<String>.from(value['players']);
+
+      List<MatchModel> matches =
+          (value['matches'] as List<dynamic>?)?.map((matchData) {
+                // Converta os dados da partida para instâncias de MatchModel conforme necessário
+                return MatchModel(
+                  player1Id: matchData['player1Id'] ?? '',
+                  player2Id: matchData['player2Id'] ?? '',
+                  player1Goals: matchData['player1Goals'] ?? 0,
+                  player2Goals: matchData['player2Goals'] ?? 0,
+                );
+              }).toList() ??
+              [];
+
+      groupsList[key] = GroupModel(
+        playersIds: playerIds,
+        matches: matches,
+      );
+    });
 
     List<MatchModel> matchesList = (data['matches'] as List<dynamic>?)
             ?.map((match) => MatchModel.fromMap(match))
@@ -57,6 +73,7 @@ class TourneyModel {
       players: [],
       groups: groupsList,
       playersNumber: data['playersNumber'] ?? 0,
+      groupsQuantity: data['groupsQuantity'] ?? 0,
       status: data['status'] ?? 0,
       adminPassword: data['adminPassword'] ?? '',
       matches: matchesList,
@@ -68,8 +85,9 @@ class TourneyModel {
   TourneyModel copyWith({
     String? tourneyName,
     List<PlayerModel>? players,
-    List<GroupModel>? groups,
+    Map<String, GroupModel>? groups,
     int? playersNumber,
+    int? groupsQuantity,
     int? status,
     int? adminPassword,
     List<MatchModel>? matches,
@@ -80,6 +98,7 @@ class TourneyModel {
       players: players ?? this.players,
       groups: groups ?? this.groups,
       playersNumber: playersNumber ?? this.playersNumber,
+      groupsQuantity: groupsQuantity ?? this.groupsQuantity,
       status: status ?? this.status,
       adminPassword: adminPassword ?? this.adminPassword,
       matches: matches ?? this.matches,

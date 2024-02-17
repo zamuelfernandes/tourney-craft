@@ -37,7 +37,7 @@ class InitialCubit extends Cubit<InitialState> {
     }
   }
 
-  Future<void> createTourney({
+  Future<String> createTourney({
     required String tourneyName,
     required int playersNumber,
     required int adminPassword,
@@ -53,9 +53,10 @@ class InitialCubit extends Cubit<InitialState> {
     emit(state.copyWith(
       isLoading: false,
       isSuccess: true,
-      message: result.message,
       tourneyId: result.tourneyId,
     ));
+
+    return result.message;
   }
 
   Future<Map<String, dynamic>> getTourneyById({
@@ -161,6 +162,8 @@ class InitialCubit extends Cubit<InitialState> {
             'Torneio ainda não iniciado!',
             AppColors.secondaryBlack,
           );
+
+          emit(state.copyWith(isLoading: false));
         }
 
         if (isAdm && tourney['adminPassword'] == int.parse(adminPassword)) {
@@ -191,6 +194,8 @@ class InitialCubit extends Cubit<InitialState> {
               'Cadastros dos Jogadores \nainda não finalizados!',
               AppColors.secondaryBlack,
             );
+
+            emit(state.copyWith(isLoading: false));
           } else {
             print('============ GO TO DASHBOARD ============');
             final folderRepository = TourneyRepository();
@@ -215,6 +220,8 @@ class InitialCubit extends Cubit<InitialState> {
             'Senha incorreta!',
             AppColors.secondaryBlack,
           );
+
+          emit(state.copyWith(isLoading: false));
         }
       } else {
         BaseBottomMessage.showMessage(
@@ -222,6 +229,8 @@ class InitialCubit extends Cubit<InitialState> {
           'Torneio não encontrado!',
           AppColors.secondaryBlack,
         );
+
+        emit(state.copyWith(isLoading: false));
       }
     } catch (e) {
       emit(state.copyWith(

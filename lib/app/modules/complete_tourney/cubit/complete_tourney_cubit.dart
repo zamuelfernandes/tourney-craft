@@ -33,6 +33,10 @@ class CompleteTourneyCubit extends Cubit<CompleteTourneyState> {
         isSuccess: true,
         message: 'Success detected',
         tourney: tourney.copyWith(players: players),
+        groupQuant: tourney.groupsQuantity,
+        groupsList: state.groupsList.isNotEmpty
+            ? state.groupsList
+            : List.generate(tourney.groupsQuantity, (index) => []),
       ));
     } catch (e) {
       //ERROR STATE
@@ -47,7 +51,16 @@ class CompleteTourneyCubit extends Cubit<CompleteTourneyState> {
     }
   }
 
-  void setGroupQuant({required int number}) {
+  void setGroupQuant({required int number}) async {
+    String? tourneyId = await TourneyRepository().getValue(
+      Constants.tourneyCodeFolder,
+    );
+
+    _firestoreService.updateGroupsQuantity(
+      groupsQuantity: number,
+      tourneyId: tourneyId!,
+    );
+
     emit(state.copyWith(
       groupQuant: number,
       groupsList: List.generate(number, (index) => []),

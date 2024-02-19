@@ -130,6 +130,18 @@ class PlayerModel {
     required this.goalsSuffered,
   });
 
+  static PlayerModel get sample => PlayerModel(
+        playerName: 'Aux',
+        id: 'NULL',
+        teamName: 'Aux de Partidas',
+        points: 0,
+        wins: 0,
+        loses: 0,
+        ties: 0,
+        goalsMade: 0,
+        goalsSuffered: 0,
+      );
+
   // Método factory para converter dados de um mapa para uma instância de PlayerModel
   factory PlayerModel.fromMap(String id, Map<String, dynamic> data) {
     return PlayerModel(

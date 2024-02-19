@@ -462,33 +462,52 @@ class CompleteTourneyCubit extends Cubit<CompleteTourneyState> {
   }
 
   List<List<MatchModel>> generateMatches({required List<PlayerModel> players}) {
-    List<List<MatchModel>> allMatches = [];
+    List<List<MatchModel>> rodadas = [];
 
-    for (int i = 0; i < players.length - 1; i++) {
-      for (int j = i + 1; j < players.length; j++) {
-        // Criar a partida de ida
-        MatchModel matchIn = MatchModel(
-          player1Goals: 0,
-          player2Goals: 0,
-          player1Id: players[i].id,
-          player2Id: players[j].id,
-        );
-
-        // Criar a partida de volta
-        MatchModel matchOut = MatchModel(
-          player1Goals: 0,
-          player2Goals: 0,
-          player1Id: players[j].id,
-          player2Id: players[i].id,
-        );
-        ;
-
-        // Adicionar as partidas à lista
-        allMatches.add([matchIn, matchOut]);
-      }
+    // Verificar se o número de jogadores é par
+    if (players.length % 2 != 0) {
+      // Adicionar um jogador fictício para tornar o número par, se necessário
+      players.add(PlayerModel.sample);
     }
 
-    return allMatches;
+    int totalRodadas = players.length - 1;
+
+    for (int rodada = 0; rodada < totalRodadas; rodada++) {
+      List<MatchModel> partidasRodada = [];
+
+      for (int i = 0; i < players.length ~/ 2; i++) {
+        if (players[i].playerName != 'Aux' &&
+            players[players.length - 1 - i].playerName != 'Aux') {
+          partidasRodada.add(
+            MatchModel(
+              player1Id: players[i].id,
+              player1Goals: 0,
+              player2Id: players[players.length - 1 - i].id,
+              player2Goals: 0,
+            ),
+          );
+        }
+      }
+
+      // Rotacionar os players para formar novas partidas na próxima rodada
+      players.insert(1, players.removeLast());
+
+      rodadas.add(partidasRodada);
+    }
+
+    return rodadas;
+  }
+
+  List<List<MatchModel>> invertMatches(List<List<MatchModel>> rodadas) {
+    for (var rodada in rodadas) {
+      for (var partida in rodada) {
+        // Inverter os jogadores em cada partida
+        var temp = partida.player1Id;
+        partida.player1Id = partida.player2Id;
+        partida.player2Id = temp;
+      }
+    }
+    return rodadas;
   }
 
   PlayerModel pickPlayerById({required String id}) {

@@ -64,7 +64,7 @@ class _SwitchesWidgetsState extends State<SwitchesWidgets> {
             ),
             SizedBox(width: 5),
             Text(
-              'Quartas de final',
+              'Quartas',
               style: AppTextStyle.subtitleStyle.copyWith(
                 fontSize: 16,
               ),
@@ -93,7 +93,7 @@ class _SwitchesWidgetsState extends State<SwitchesWidgets> {
             ),
             SizedBox(width: 5),
             Text(
-              'Oitavas de final',
+              'Oitavas',
               style: AppTextStyle.subtitleStyle.copyWith(
                 fontSize: 16,
               ),

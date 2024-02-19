@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:tourney_craft/app/modules/complete_tourney/cubit/complete_tourney_cubit.dart';
 import 'package:tourney_craft/app/shared/models/tourney.dart';
+import 'package:tourney_craft/app/shared/themes/themes.dart';
 
 class DataTableWidget extends StatefulWidget {
   final CompleteTourneyCubit cubit;
@@ -20,25 +21,52 @@ class DataTableWidget extends StatefulWidget {
 class _DataTableWidgetState extends State<DataTableWidget> {
   @override
   Widget build(BuildContext context) {
-    return DataTable(
-      columnSpacing: 30,
-      columns: [
-        DataColumn(label: Text('Confronto')),
-        DataColumn(label: Text('Home Team')),
-        DataColumn(label: Text('Away Team')),
-      ],
-      rows: List<DataRow>.generate(widget.matches.length, (index) {
-        MatchModel match = widget.matches[index][widget.isReturn ? 1 : 0];
-        final player1 = widget.cubit.pickPlayerById(id: match.player1Id);
-        final player2 = widget.cubit.pickPlayerById(id: match.player2Id);
-        return DataRow(
-          cells: [
-            DataCell(Center(child: Text(index.toString()))),
-            DataCell(Center(child: Text(player1.playerName))),
-            DataCell(Center(child: Text(player2.playerName))),
-          ],
+    List<List<MatchModel>> rodada = [];
+    if (widget.isReturn) {
+      rodada = widget.cubit.invertMatches(widget.matches);
+    } else {
+      rodada = widget.matches;
+    }
+
+    return ListView.builder(
+      itemCount: rodada.length,
+      padding: EdgeInsets.all(8),
+      itemBuilder: (context, index) {
+        return Padding(
+          padding: const EdgeInsets.only(bottom: 3),
+          child: Card(
+            elevation: 2,
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 15),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  Text(
+                    'Round ${index + 1}'.toUpperCase(),
+                    style: AppTextStyle.titleSmallStyle,
+                  ),
+                  SizedBox(width: 16),
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: rodada[index].map((partida) {
+                      final player1 =
+                          widget.cubit.pickPlayerById(id: partida.player1Id);
+                      final player2 =
+                          widget.cubit.pickPlayerById(id: partida.player2Id);
+                      return Text(
+                        '${player1.teamName} x ${player2.teamName}',
+                        style: AppTextStyle.subtitleStyle.copyWith(
+                          fontSize: 16,
+                        ),
+                      );
+                    }).toList(),
+                  ),
+                ],
+              ),
+            ),
+          ),
         );
-      }),
+      },
     );
   }
 }

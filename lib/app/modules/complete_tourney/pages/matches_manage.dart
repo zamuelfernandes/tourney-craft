@@ -36,7 +36,7 @@ class _MatchesManagePageState extends State<MatchesManagePage> {
   Widget build(BuildContext context) {
     final sizeOf = MediaQuery.sizeOf(context);
     return Scaffold(
-      appBar: BaseAppBar(title: 'Organizar Grupos'),
+      appBar: BaseAppBar(title: 'Preview das Partidas'),
       body: BlocConsumer<CompleteTourneyCubit, CompleteTourneyState>(
         bloc: widget.cubit,
         listener: (context, state) {
@@ -49,7 +49,7 @@ class _MatchesManagePageState extends State<MatchesManagePage> {
           }
         },
         builder: (context, state) {
-          final matches = widget.cubit.generateMatches(
+          final groupMatches = widget.cubit.generateMatches(
             players: state.groupsList[selectedGroup - 1],
           );
 
@@ -88,31 +88,27 @@ class _MatchesManagePageState extends State<MatchesManagePage> {
                   'Jogos de Ida'.toUpperCase(),
                   style: AppTextStyle.subtitleStyle,
                 ),
-                Center(
-                  child: Container(
-                    height: sizeOf.height * 0.3,
-                    decoration: BoxDecoration(
-                      border: Border.all(
-                        color: AppColors.secondaryBlack,
-                        width: 2,
-                      ),
-                      borderRadius: BorderRadius.circular(15),
-                      color: Colors.white,
-                      boxShadow: [
-                        BoxShadow(
-                          color: AppColors.black.withOpacity(.2),
-                          blurRadius: 8,
-                          spreadRadius: 5,
-                        ),
-                      ],
+                Container(
+                  height: sizeOf.height * 0.3,
+                  decoration: BoxDecoration(
+                    border: Border.all(
+                      color: AppColors.secondaryBlack,
+                      width: 2,
                     ),
-                    child: SingleChildScrollView(
-                      child: DataTableWidget(
-                        cubit: widget.cubit,
-                        matches: matches,
-                        isReturn: false,
+                    borderRadius: BorderRadius.circular(15),
+                    color: Colors.white,
+                    boxShadow: [
+                      BoxShadow(
+                        color: AppColors.black.withOpacity(.2),
+                        blurRadius: 8,
+                        spreadRadius: 5,
                       ),
-                    ),
+                    ],
+                  ),
+                  child: DataTableWidget(
+                    cubit: widget.cubit,
+                    matches: groupMatches,
+                    isReturn: false,
                   ),
                 ),
                 const SizedBox(height: 10),
@@ -121,31 +117,27 @@ class _MatchesManagePageState extends State<MatchesManagePage> {
                   'Jogos de Volta'.toUpperCase(),
                   style: AppTextStyle.subtitleStyle,
                 ),
-                Center(
-                  child: Container(
-                    height: sizeOf.height * 0.3,
-                    decoration: BoxDecoration(
-                      border: Border.all(
-                        color: AppColors.secondaryBlack,
-                        width: 2,
-                      ),
-                      borderRadius: BorderRadius.circular(15),
-                      color: Colors.white,
-                      boxShadow: [
-                        BoxShadow(
-                          color: AppColors.black.withOpacity(.2),
-                          blurRadius: 8,
-                          spreadRadius: 5,
-                        ),
-                      ],
+                Container(
+                  height: sizeOf.height * 0.3,
+                  decoration: BoxDecoration(
+                    border: Border.all(
+                      color: AppColors.secondaryBlack,
+                      width: 2,
                     ),
-                    child: SingleChildScrollView(
-                      child: DataTableWidget(
-                        cubit: widget.cubit,
-                        matches: matches,
-                        isReturn: true,
+                    borderRadius: BorderRadius.circular(15),
+                    color: Colors.white,
+                    boxShadow: [
+                      BoxShadow(
+                        color: AppColors.black.withOpacity(.2),
+                        blurRadius: 8,
+                        spreadRadius: 5,
                       ),
-                    ),
+                    ],
+                  ),
+                  child: DataTableWidget(
+                    cubit: widget.cubit,
+                    matches: groupMatches,
+                    isReturn: true,
                   ),
                 ),
                 const SizedBox(height: 25),
@@ -174,7 +166,7 @@ class _MatchesManagePageState extends State<MatchesManagePage> {
                       //   print('');
                       // }
 
-                      print(matches);
+                      print(groupMatches);
 
                       BaseBottomMessage.showMessage(
                         context,

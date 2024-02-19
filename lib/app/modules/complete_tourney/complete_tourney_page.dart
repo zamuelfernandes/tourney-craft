@@ -29,6 +29,7 @@ class _CompleteTourneyPageState extends State<CompleteTourneyPage> {
   bool loosersOption = false;
   bool quartersOption = true;
   bool octavesOption = false;
+  bool winnerLowerOption = false;
 
   @override
   void dispose() {
@@ -112,7 +113,7 @@ class _CompleteTourneyPageState extends State<CompleteTourneyPage> {
                               ),
                             ),
                           ),
-                          SizedBox(height: sizeOf.height * .07),
+                          SizedBox(height: sizeOf.height * .03),
                           TextFormField(
                             controller: groupQuantEC,
                             validator:
@@ -168,6 +169,7 @@ class _CompleteTourneyPageState extends State<CompleteTourneyPage> {
                             child: SwitchesWidgets(
                               playersQuant: state.tourney!.players.length,
                               loosersOption: loosersOption,
+                              winnerLowerOption: winnerLowerOption,
                               quartersOption: quartersOption,
                               octavesOption: octavesOption,
                             ),

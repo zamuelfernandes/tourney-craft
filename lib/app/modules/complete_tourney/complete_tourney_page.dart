@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_modular/flutter_modular.dart';
 import 'package:tourney_craft/app/modules/complete_tourney/pages/matches_manage.dart';
 import 'package:tourney_craft/app/modules/complete_tourney/pages/player_manage.dart';
 import 'package:tourney_craft/app/modules/complete_tourney/widgets/switches_widgets.dart';
 import 'package:tourney_craft/app/shared/components/base_bottom_message.dart';
+import 'package:tourney_craft/app/shared/constants/routes.dart';
+import 'package:tourney_craft/app/shared/services/tourney_repository.dart';
 import 'package:tourney_craft/app/shared/themes/themes.dart';
 import 'package:validatorless/validatorless.dart';
 import '../../shared/components/base_app_bar.dart';
@@ -51,7 +54,17 @@ class _CompleteTourneyPageState extends State<CompleteTourneyPage> {
     final sizeOf = MediaQuery.sizeOf(context);
 
     return Scaffold(
-      appBar: BaseAppBar(),
+      appBar: BaseAppBar(
+        actions: [
+          IconButton(
+            onPressed: () {
+              TourneyRepository().clearAllValues();
+              Modular.to.pushReplacementNamed(Routes.initial);
+            },
+            icon: Icon(Icons.logout),
+          )
+        ],
+      ),
       body: BlocConsumer<CompleteTourneyCubit, CompleteTourneyState>(
         bloc: _cubit,
         listener: (context, state) {

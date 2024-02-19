@@ -26,6 +26,11 @@ class TourneyRepository {
     await prefs.remove(key);
   }
 
+  Future<void> clearAllValues() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    await prefs.clear();
+  }
+
   Future<void> printInternalData() async {
     print(
       'CODE: ${await TourneyRepository().getValue(Constants.tourneyCodeFolder)}',

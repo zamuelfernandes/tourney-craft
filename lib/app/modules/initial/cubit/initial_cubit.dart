@@ -180,7 +180,7 @@ class InitialCubit extends Cubit<InitialState> {
             );
 
             emit(state.copyWith(isLoading: false));
-            Modular.to.pushNamed(
+            Modular.to.pushReplacementNamed(
               Routes.completeTourney,
               arguments: tourneyId,
             );

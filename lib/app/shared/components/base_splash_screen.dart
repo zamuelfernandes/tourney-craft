@@ -40,6 +40,7 @@ class _BaseSplashScreenState extends State<BaseSplashScreen>
           arguments: tourneyCode,
         );
       } else if (tourneyCode != null) {
+        print('=== GO TO DASHBOARD ===');
         // Modular.to.pushReplacementNamed(Routes.play);
         Modular.to.pushReplacementNamed(Routes.initial);
       } else {

@@ -36,7 +36,27 @@ class _MatchesManagePageState extends State<MatchesManagePage> {
   Widget build(BuildContext context) {
     final sizeOf = MediaQuery.sizeOf(context);
     return Scaffold(
-      appBar: BaseAppBar(title: 'Preview das Partidas'),
+      appBar: BaseAppBar(
+        title: 'Preview das Partidas',
+        actions: [
+          PopupMenuButton(
+            itemBuilder: (context) {
+              return widget.groups.map((int group) {
+                return PopupMenuItem<int>(
+                  value: group,
+                  child: Text('Grupo $group'),
+                );
+              }).toList();
+            },
+            onSelected: (int value) {
+              setState(() {
+                selectedGroup = value;
+              });
+            },
+            icon: Icon(Icons.filter_list_rounded),
+          ),
+        ],
+      ),
       body: BlocConsumer<CompleteTourneyCubit, CompleteTourneyState>(
         bloc: widget.cubit,
         listener: (context, state) {
@@ -57,39 +77,15 @@ class _MatchesManagePageState extends State<MatchesManagePage> {
             child: Column(
               children: [
                 const SizedBox(height: 5),
-                Card(
-                  elevation: 5,
-                  surfaceTintColor: AppColors.white,
-                  child: Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: DropdownButton<int>(
-                      underline: const SizedBox(),
-                      borderRadius: BorderRadius.circular(5),
-                      value: selectedGroup,
-                      items: widget.groups.map((int group) {
-                        return DropdownMenuItem<int>(
-                          value: group,
-                          child: Text('Grupo $group'),
-                        );
-                      }).toList(),
-                      onChanged: (int? value) {
-                        if (value != null) {
-                          setState(() {
-                            selectedGroup = value;
-                          });
-                        }
-                      },
-                    ),
-                  ),
-                ),
-                const SizedBox(height: 10),
+
                 //========== JODOS DE IDA ==========
                 Text(
                   'Jogos de Ida'.toUpperCase(),
                   style: AppTextStyle.subtitleStyle,
                 ),
                 Container(
-                  height: sizeOf.height * 0.3,
+                  height: sizeOf.height * 0.32,
+                  margin: const EdgeInsets.all(10),
                   decoration: BoxDecoration(
                     border: Border.all(
                       color: AppColors.secondaryBlack,
@@ -118,7 +114,8 @@ class _MatchesManagePageState extends State<MatchesManagePage> {
                   style: AppTextStyle.subtitleStyle,
                 ),
                 Container(
-                  height: sizeOf.height * 0.3,
+                  height: sizeOf.height * 0.32,
+                  margin: const EdgeInsets.all(10),
                   decoration: BoxDecoration(
                     border: Border.all(
                       color: AppColors.secondaryBlack,

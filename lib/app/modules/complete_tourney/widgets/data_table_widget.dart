@@ -30,14 +30,14 @@ class _DataTableWidgetState extends State<DataTableWidget> {
 
     return ListView.builder(
       itemCount: rodada.length,
-      padding: EdgeInsets.all(8),
+      padding: EdgeInsets.all(12),
       itemBuilder: (context, index) {
         return Padding(
           padding: const EdgeInsets.only(bottom: 3),
           child: Card(
             elevation: 2,
             child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 15),
+              padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 15),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
@@ -45,7 +45,7 @@ class _DataTableWidgetState extends State<DataTableWidget> {
                     'Round ${index + 1}'.toUpperCase(),
                     style: AppTextStyle.titleSmallStyle,
                   ),
-                  SizedBox(width: 16),
+                  SizedBox(width: 15),
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: rodada[index].map((partida) {

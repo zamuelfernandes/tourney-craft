@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:tourney_craft/app/shared/themes/themes.dart';
+import 'package:flutter_modular/flutter_modular.dart';
+
+import '../constants/routes.dart';
 
 class BaseSplashScreen extends StatefulWidget {
   const BaseSplashScreen({super.key});
@@ -11,36 +13,65 @@ class BaseSplashScreen extends StatefulWidget {
 
 class _BaseSplashScreenState extends State<BaseSplashScreen>
     with SingleTickerProviderStateMixin {
+  late AnimationController _controller;
+
   @override
   void initState() {
     super.initState();
     SystemChrome.setEnabledSystemUIMode(SystemUiMode.immersive);
+    _controller = AnimationController(
+      duration: Duration(seconds: 1),
+      vsync: this,
+    )..repeat(reverse: true, period: Duration(seconds: 1));
 
-    // Future.delayed(Duration(seconds: 5), () {
-    //   Modular.to.pushReplacementNamed(Routes.initial);
-    // });
+    Future.delayed(Duration(milliseconds: 3500), () {
+      Modular.to.pushReplacementNamed(Routes.initial);
+    });
   }
 
   @override
   void dispose() {
+    _controller.dispose();
+    SystemChrome.setEnabledSystemUIMode(
+      SystemUiMode.manual,
+      overlays: SystemUiOverlay.values,
+    );
     super.dispose();
-    // SystemChrome.setEnabledSystemUIMode(
-    //   SystemUiMode.manual,
-    //   overlays: SystemUiOverlay.values,
-    // );
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Container(
-        color: AppColors.darkPrimary,
-        width: double.infinity,
-        child: Center(
-          child: Image.asset(
-            'assets/gifs/crabwalk.gif',
-            width: MediaQuery.sizeOf(context).width * 0.9,
-          ),
+      body: Center(
+        child: AnimatedBuilder(
+          animation: _controller,
+          builder: (context, child) {
+            return Transform.scale(
+              scale: _controller.value * 0.5 + 0.6,
+              child: Hero(
+                tag: 'logo',
+                child: Card(
+                  elevation: 15,
+                  surfaceTintColor: Colors.white,
+                  color: Colors.white,
+                  shape: const CircleBorder(),
+                  child: Padding(
+                    padding: const EdgeInsets.all(25),
+                    child: ClipRRect(
+                      borderRadius: BorderRadius.circular(100),
+                      child: SizedBox(
+                        width: MediaQuery.of(context).size.width * .75,
+                        child: Image.asset(
+                          'assets/icon/logo.png',
+                          fit: BoxFit.cover,
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+            );
+          },
         ),
       ),
     );

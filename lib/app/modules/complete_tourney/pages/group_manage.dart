@@ -108,14 +108,20 @@ class _GroupManagePageState extends State<GroupManagePage> {
                           List<PlayerModel> avaliablePlayers =
                               widget.playersList
                                   .where(
-                                    (player) => !state.groupsList
-                                        .any((group) => group.contains(player)),
+                                    (player) => !state.groupsList.any((group) {
+                                      for (var p in group) {
+                                        if (p.id == player.id) {
+                                          return true;
+                                        }
+                                      }
+                                      return false;
+                                    }),
                                   )
                                   .toList();
 
                           widget.cubit.addPlayersToGroupDialog(
                             context,
-                            players: avaliablePlayers,
+                            avaliablePlayers: avaliablePlayers,
                             selectedGroup: selectedGroup,
                           );
                         },

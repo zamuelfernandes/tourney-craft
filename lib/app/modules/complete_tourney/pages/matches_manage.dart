@@ -37,7 +37,7 @@ class _MatchesManagePageState extends State<MatchesManagePage> {
     final sizeOf = MediaQuery.sizeOf(context);
     return Scaffold(
       appBar: BaseAppBar(
-        title: 'Preview das Partidas',
+        title: 'Rodadas Preview',
         actions: [
           PopupMenuButton(
             itemBuilder: (context) {

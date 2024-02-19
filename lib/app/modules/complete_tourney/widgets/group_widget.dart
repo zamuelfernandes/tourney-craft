@@ -24,6 +24,8 @@ class GroupWidget extends StatefulWidget {
 class _GroupWidgetState extends State<GroupWidget> {
   @override
   Widget build(BuildContext context) {
+    widget.playersList.removeWhere((element) => element.id == 'NULL');
+
     return ReorderableListView(
       onReorder: (oldIndex, newIndex) {
         setState(() {

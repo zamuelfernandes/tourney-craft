@@ -100,11 +100,11 @@ class CompleteTourneyCubit extends Cubit<CompleteTourneyState> {
 
   void addPlayersToGroupDialog(
     BuildContext context, {
-    required List<PlayerModel> players,
+    required List<PlayerModel> avaliablePlayers,
     required int selectedGroup,
   }) async {
     List<bool> selectedPlayers = List.generate(
-      players.length,
+      avaliablePlayers.length,
       (index) => false,
     );
 
@@ -125,7 +125,7 @@ class CompleteTourneyCubit extends Cubit<CompleteTourneyState> {
               return SizedBox(
                 height: MediaQuery.sizeOf(context).height * 0.4,
                 width: MediaQuery.sizeOf(context).width * 0.9,
-                child: players.isEmpty
+                child: avaliablePlayers.isEmpty
                     ? const Center(
                         child: Text(
                           'Nenhum jogador disponível',
@@ -137,9 +137,9 @@ class CompleteTourneyCubit extends Cubit<CompleteTourneyState> {
                         ),
                       )
                     : ListView.separated(
-                        itemCount: players.length,
+                        itemCount: avaliablePlayers.length,
                         itemBuilder: (context, index) {
-                          final player = players[index];
+                          final player = avaliablePlayers[index];
 
                           return Container(
                             decoration: BoxDecoration(

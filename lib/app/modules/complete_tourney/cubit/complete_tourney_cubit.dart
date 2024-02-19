@@ -36,7 +36,10 @@ class CompleteTourneyCubit extends Cubit<CompleteTourneyState> {
         groupQuant: tourney.groupsQuantity,
         groupsList: state.groupsList.isNotEmpty
             ? state.groupsList
-            : List.generate(tourney.groupsQuantity, (index) => []),
+            : convertGroupList(
+                groups: tourney.groups,
+                players: players,
+              ),
       ));
     } catch (e) {
       //ERROR STATE
@@ -49,6 +52,34 @@ class CompleteTourneyCubit extends Cubit<CompleteTourneyState> {
             ))
           : null;
     }
+  }
+
+  List<List<PlayerModel>> convertGroupList({
+    required Map<String, GroupModel> groups,
+    required List<PlayerModel> players,
+  }) {
+    List<List<String>> groupsList = groups.values
+        .map((group) => group.playersIds)
+        .toList()
+        .cast<List<String>>();
+
+    List<List<PlayerModel>> convertedGroups = [];
+
+    for (var group in groupsList) {
+      List<PlayerModel> convertedGroup = [];
+
+      for (var playerId in group) {
+        final player = players.firstWhere(
+          (player) => player.id == playerId,
+        );
+
+        convertedGroup.add(player);
+      }
+
+      convertedGroups.add(convertedGroup);
+    }
+
+    return convertedGroups;
   }
 
   void setGroupQuant({required int number}) async {

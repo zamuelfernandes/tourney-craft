@@ -185,6 +185,7 @@ class FirestoreService {
   }) async {
     await _tourneyCollection.doc(tourneyId).update({
       'groupsQuantity': groupsQuantity,
+      'groups': {},
     });
   }
 

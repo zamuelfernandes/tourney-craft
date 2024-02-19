@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:tourney_craft/app/modules/complete_tourney/pages/matches_manage.dart';
 import 'package:tourney_craft/app/modules/complete_tourney/pages/player_manage.dart';
+import 'package:tourney_craft/app/modules/complete_tourney/widgets/switches_widgets.dart';
 import 'package:tourney_craft/app/shared/components/base_bottom_message.dart';
 import 'package:tourney_craft/app/shared/themes/themes.dart';
 import 'package:validatorless/validatorless.dart';
@@ -25,6 +26,9 @@ class CompleteTourneyPage extends StatefulWidget {
 class _CompleteTourneyPageState extends State<CompleteTourneyPage> {
   late CompleteTourneyCubit _cubit;
   final groupQuantEC = TextEditingController();
+  bool loosersOption = false;
+  bool quartersOption = true;
+  bool octavesOption = false;
 
   @override
   void dispose() {
@@ -82,7 +86,7 @@ class _CompleteTourneyPageState extends State<CompleteTourneyPage> {
                       Column(
                         children: [
                           SizedBox(
-                            height: sizeOf.height * 0.1,
+                            height: sizeOf.height * 0.08,
                             child: Center(
                               child: Column(
                                 mainAxisAlignment: MainAxisAlignment.center,
@@ -159,7 +163,16 @@ class _CompleteTourneyPageState extends State<CompleteTourneyPage> {
                               ),
                             ),
                           ),
-                          SizedBox(height: sizeOf.height * .07),
+                          SizedBox(height: sizeOf.height * .03),
+                          Center(
+                            child: SwitchesWidgets(
+                              playersQuant: state.tourney!.players.length,
+                              loosersOption: loosersOption,
+                              quartersOption: quartersOption,
+                              octavesOption: octavesOption,
+                            ),
+                          ),
+                          SizedBox(height: sizeOf.height * .03),
                           SizedBox(
                             width: sizeOf.width * .55,
                             height: sizeOf.height * .08,
@@ -196,7 +209,7 @@ class _CompleteTourneyPageState extends State<CompleteTourneyPage> {
                               ),
                             ),
                           ),
-                          const SizedBox(height: 30),
+                          const SizedBox(height: 20),
                           SizedBox(
                             width: sizeOf.width * .55,
                             height: sizeOf.height * .08,
@@ -217,7 +230,7 @@ class _CompleteTourneyPageState extends State<CompleteTourneyPage> {
                               ),
                             ),
                           ),
-                          const SizedBox(height: 30),
+                          const SizedBox(height: 20),
                           SizedBox(
                             width: sizeOf.width * .55,
                             height: sizeOf.height * .08,
@@ -245,7 +258,7 @@ class _CompleteTourneyPageState extends State<CompleteTourneyPage> {
                               ),
                             ),
                           ),
-                          const SizedBox(height: 30),
+                          const SizedBox(height: 20),
                           SizedBox(
                             width: sizeOf.width * .55,
                             height: sizeOf.height * .08,
@@ -271,7 +284,10 @@ class _CompleteTourneyPageState extends State<CompleteTourneyPage> {
                               },
                               child: Padding(
                                 padding: const EdgeInsets.all(12),
-                                child: Text('Iniciar Torneio'.toUpperCase()),
+                                child: Text(
+                                  'Iniciar Torneio'.toUpperCase(),
+                                  textAlign: TextAlign.center,
+                                ),
                               ),
                               style: ButtonStyle(
                                 backgroundColor: MaterialStateProperty.all(

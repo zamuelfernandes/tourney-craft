@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_modular/flutter_modular.dart';
+import 'package:tourney_craft/app/shared/constants/constants.dart';
+import 'package:tourney_craft/app/shared/services/tourney_repository.dart';
 
 import '../constants/routes.dart';
 
@@ -24,8 +26,25 @@ class _BaseSplashScreenState extends State<BaseSplashScreen>
       vsync: this,
     )..repeat(reverse: true, period: Duration(seconds: 1));
 
-    Future.delayed(Duration(milliseconds: 3500), () {
-      Modular.to.pushReplacementNamed(Routes.initial);
+    Future.delayed(Duration(milliseconds: 3500), () async {
+      final tourneyCode =
+          await TourneyRepository().getValue(Constants.tourneyCodeFolder);
+      final password =
+          await TourneyRepository().getValue(Constants.admPasswordFolder);
+      final status =
+          await TourneyRepository().getValue(Constants.tourneyStatusFolder);
+
+      if (status == '1' && password != null) {
+        Modular.to.pushReplacementNamed(
+          Routes.completeTourney,
+          arguments: tourneyCode,
+        );
+      } else if (tourneyCode != null) {
+        // Modular.to.pushReplacementNamed(Routes.play);
+        Modular.to.pushReplacementNamed(Routes.initial);
+      } else {
+        Modular.to.pushReplacementNamed(Routes.initial);
+      }
     });
   }
 

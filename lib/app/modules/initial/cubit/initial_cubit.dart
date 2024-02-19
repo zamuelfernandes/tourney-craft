@@ -148,10 +148,6 @@ class InitialCubit extends Cubit<InitialState> {
             tourneyId,
           );
           await folderRepository.saveValue(
-            Constants.admPasswordFolder,
-            adminPassword,
-          );
-          await folderRepository.saveValue(
             Constants.tourneyStatusFolder,
             tourney['status'].toString(),
           );

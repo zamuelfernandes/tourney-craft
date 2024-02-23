@@ -1,6 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:tourney_craft/app/shared/models/tourney.dart';
 
+import '../../modules/complete_tourney/models/aux_matches_model.dart';
+
 class FirestoreService {
   //get data from firestore
   final CollectionReference _tourneyCollection =
@@ -151,13 +153,18 @@ class FirestoreService {
   Future<String> updateTourneyGroups({
     required String tourneyId,
     required List<List<String>> groups,
+    required List<AuxMatchesModel> matches,
   }) async {
     try {
       Map<String, dynamic> groupsToInsert = {};
 
       for (int i = 0; i < groups.length; i++) {
+        final oneWayMapMatches = converterParaMapa(matches[i].oneWayMatches);
+        final returnMapMatches = converterParaMapa(matches[i].returnMatches);
+
         groupsToInsert['group${i + 1}'] = {
-          'matches': [],
+          'oneWayMatches': oneWayMapMatches,
+          'returnMatches': returnMapMatches,
           'players': groups[i],
         };
       }
@@ -169,9 +176,9 @@ class FirestoreService {
       });
 
       if (hasError) {
-        return 'Erro ao cadatrar Grupos!';
+        return 'Erro ao atualizar Grupos!';
       } else {
-        return 'Grupos cadastrados com Sucesso!';
+        return 'Grupos atualizados com Sucesso!';
       }
     } catch (e) {
       print(e);
@@ -213,5 +220,19 @@ class FirestoreService {
       print('Erro ao contar documentos: $e');
       return -1; // Retorna -1 em caso de erro
     }
+  }
+
+  Map<String, List<Map<String, dynamic>>> converterParaMapa(
+      List<List<Map<String, dynamic>>> listaDeRodadas) {
+    Map<String, List<Map<String, dynamic>>> mapaDeConfrontos = {};
+
+    for (int i = 0; i < listaDeRodadas.length; i++) {
+      String chaveRodada = 'rodada${i + 1}';
+      List<Map<String, dynamic>> confrontos = listaDeRodadas[i];
+
+      mapaDeConfrontos[chaveRodada] = confrontos;
+    }
+
+    return mapaDeConfrontos;
   }
 }

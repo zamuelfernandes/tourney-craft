@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:tourney_craft/app/modules/complete_tourney/models/aux_matches_model.dart';
 import 'package:tourney_craft/app/shared/services/tourney_repository.dart';
 import 'package:tourney_craft/app/shared/themes/themes.dart';
 import 'package:validatorless/validatorless.dart';
@@ -313,10 +314,16 @@ class CompleteTourneyCubit extends Cubit<CompleteTourneyState> {
       }).toList();
     }).toList();
 
+    final matches = List<AuxMatchesModel>.generate(
+      groups.length,
+      (index) => AuxMatchesModel(oneWayMatches: [], returnMatches: []),
+    );
+
     try {
       final result = await _firestoreService.updateTourneyGroups(
         groups: groups,
         tourneyId: tourneyId!,
+        matches: matches,
       );
 
       loadData(tourneyId: tourneyId);
@@ -512,5 +519,78 @@ class CompleteTourneyCubit extends Cubit<CompleteTourneyState> {
 
   PlayerModel pickPlayerById({required String id}) {
     return state.tourney!.players.firstWhere((player) => player.id == id);
+  }
+
+  Future<String> registerMatches() async {
+    emit(state.copyWith(isLoading: true));
+    final tourneyId = await TourneyRepository().getValue(
+      Constants.tourneyCodeFolder,
+    );
+
+    final groups = state.groupsList.map((group) {
+      return group.map((player) {
+        return player.id;
+      }).toList();
+    }).toList();
+
+    final allMatches = state.groupsList.map(
+      (e) {
+        return generateMatches(players: e);
+      },
+    ).toList();
+
+    List<AuxMatchesModel> auxMatches = [];
+
+    for (var groupMatches in allMatches) {
+      groupMatches = invertMatches(groupMatches);
+      final oneWayMatches = groupMatches
+          .map((rodada) => rodada
+              .map((partida) => {
+                    'player1Id': partida.player1Id,
+                    'player1Goals': partida.player1Goals,
+                    'player2Id': partida.player2Id,
+                    'player2Goals': partida.player2Goals,
+                  })
+              .toList())
+          .toList();
+
+      groupMatches = invertMatches(groupMatches);
+      final returnMatches = groupMatches
+          .map((rodada) => rodada
+              .map((partida) => {
+                    'player1Id': partida.player1Id,
+                    'player1Goals': partida.player1Goals,
+                    'player2Id': partida.player2Id,
+                    'player2Goals': partida.player2Goals,
+                  })
+              .toList())
+          .toList();
+
+      auxMatches.add(
+        AuxMatchesModel(
+          oneWayMatches: oneWayMatches,
+          returnMatches: returnMatches,
+        ),
+      );
+    }
+
+    try {
+      final result = await _firestoreService.updateTourneyGroups(
+        groups: groups,
+        matches: auxMatches,
+        tourneyId: tourneyId!,
+      );
+
+      // loadData(tourneyId: tourneyId);
+
+      return result;
+    } catch (e) {
+      emit(state.copyWith(
+        isLoading: false,
+        isError: true,
+        message: 'Erro ao cadastrar partidas: ${e.toString()}',
+      ));
+      return 'Erro ao cadastrar partidas: ${e.toString()}';
+    }
   }
 }

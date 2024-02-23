@@ -188,7 +188,7 @@ class MatchModel {
 
   @override
   String toString() {
-    return '\nMatchModel(player1Id: $player1Id, player2Id: $player2Id, player1Goals: $player1Goals, player2Goals: $player2Goals)';
+    return '\nMatchModel(\n player1Id: $player1Id,\n player2Id: $player2Id,\n player1Goals: $player1Goals,\n player2Goals: $player2Goals\n)';
   }
 }
 

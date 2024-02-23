@@ -143,31 +143,17 @@ class _MatchesManagePageState extends State<MatchesManagePage> {
                   height: sizeOf.height * .08,
                   child: ElevatedButton(
                     onPressed: () async {
-                      print(state.groupsList
-                          .map((e) => e.map((e) => e.playerName)));
+                      // print(state.groupsList
+                      //     .map((e) => e.map((e) => e.playerName)));
 
-                      print(state.groupsList[selectedGroup - 1]
-                          .map((e) => e.playerName));
+                      // print(state.groupsList[selectedGroup - 1]
+                      //     .map((e) => e.playerName));
 
-                      // final result = await widget.cubit.registerGroups(
-                      //   groupsList: state.groupsList,
-                      // );
-
-                      // Exibir as partidas
-                      // for (int i = 0; i < matches.length; i++) {
-                      //   print('Rodada ${i + 1}:');
-                      //   for (int j = 0; j < matches[i].length; j++) {
-                      //     print(
-                      //         '  ${matches[i][j].player1Id} vs ${matches[i][j].player2Id}');
-                      //   }
-                      //   print('');
-                      // }
-
-                      print(groupMatches);
+                      final result = await widget.cubit.registerMatches();
 
                       BaseBottomMessage.showMessage(
                         context,
-                        'AINDA NÃO IMPLEMENTADO',
+                        result,
                         AppColors.secondaryBlack,
                       );
                     },

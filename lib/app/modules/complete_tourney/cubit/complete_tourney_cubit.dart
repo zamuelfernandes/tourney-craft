@@ -581,7 +581,12 @@ class CompleteTourneyCubit extends Cubit<CompleteTourneyState> {
         tourneyId: tourneyId!,
       );
 
-      // loadData(tourneyId: tourneyId);
+      _firestoreService.updateTourneyStatus(
+        status: 2,
+        tourneyId: tourneyId,
+      );
+
+      loadData(tourneyId: tourneyId);
 
       return result;
     } catch (e) {

@@ -2,6 +2,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:tourney_craft/app/shared/components/base_elevated_button.dart';
 import 'package:validatorless/validatorless.dart';
 
 import 'package:tourney_craft/app/modules/initial/cubit/initial_cubit.dart';
@@ -151,35 +152,26 @@ class _ReadyPageState extends State<ReadyPage> {
                           ),
                           Hero(
                             tag: 'Ready',
-                            child: SizedBox(
-                              width: sizeOf.width * .55,
-                              height: sizeOf.height * .08,
-                              child: ElevatedButton(
-                                onPressed: () async {
-                                  final valid =
-                                      formKey.currentState?.validate() ?? false;
+                            child: BaseElevatedButton(
+                              onPressed: () async {
+                                final valid =
+                                    formKey.currentState?.validate() ?? false;
 
-                                  if (valid) {
-                                    widget.cubit.loginTourney(
-                                      context,
-                                      tourneyId: tourneyIdEC.text,
-                                      adminPassword: adminPasswordEC.text,
-                                      isAdm: isAdm,
-                                    );
-                                  }
-                                },
-                                child: Padding(
-                                  padding: const EdgeInsets.all(12),
-                                  child: state.isLoading
-                                      ? const CircularProgressIndicator(
-                                          color: AppColors.white,
-                                        )
-                                      : Text(
-                                          'Entrar'.toUpperCase(),
-                                          textAlign: TextAlign.center,
-                                        ),
-                                ),
-                              ),
+                                if (valid) {
+                                  widget.cubit.loginTourney(
+                                    context,
+                                    tourneyId: tourneyIdEC.text,
+                                    adminPassword: adminPasswordEC.text,
+                                    isAdm: isAdm,
+                                  );
+                                }
+                              },
+                              label: 'Entrar',
+                              labelWidget: state.isLoading
+                                  ? const CircularProgressIndicator(
+                                      color: AppColors.white)
+                                  : null,
+                              color: AppColors.checkColor,
                             ),
                           ),
                         ],

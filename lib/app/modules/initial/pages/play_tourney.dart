@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:tourney_craft/app/shared/components/base_elevated_button.dart';
 import 'package:tourney_craft/app/shared/themes/themes.dart';
 import 'package:validatorless/validatorless.dart';
 
@@ -127,41 +128,32 @@ class _PlayTourneyPageState extends State<PlayTourneyPage> {
                           const SizedBox(height: 40),
                           Hero(
                             tag: 'playTourney',
-                            child: SizedBox(
-                              width: sizeOf.width * .55,
-                              height: sizeOf.height * .08,
-                              child: ElevatedButton(
-                                onPressed: () async {
-                                  final valid =
-                                      formKey.currentState?.validate() ?? false;
+                            child: BaseElevatedButton(
+                              onPressed: () async {
+                                final valid =
+                                    formKey.currentState?.validate() ?? false;
 
-                                  if (valid) {
-                                    final result =
-                                        await widget.cubit.registerPlayer(
-                                      playerName: playerNameEC.text,
-                                      teamName: teamEC.text,
-                                      tourneyId: tourneyCodeEC.text,
-                                    );
+                                if (valid) {
+                                  final result =
+                                      await widget.cubit.registerPlayer(
+                                    playerName: playerNameEC.text,
+                                    teamName: teamEC.text,
+                                    tourneyId: tourneyCodeEC.text,
+                                  );
 
-                                    BaseBottomMessage.showMessage(
-                                      context,
-                                      result,
-                                      AppColors.secondaryBlack,
-                                    );
-                                  }
-                                },
-                                child: Padding(
-                                  padding: const EdgeInsets.all(12),
-                                  child: state.isLoading
-                                      ? const CircularProgressIndicator(
-                                          color: AppColors.white,
-                                        )
-                                      : Text(
-                                          'Cadastrar'.toUpperCase(),
-                                          textAlign: TextAlign.center,
-                                        ),
-                                ),
-                              ),
+                                  BaseBottomMessage.showMessage(
+                                    context,
+                                    result,
+                                    AppColors.secondaryBlack,
+                                  );
+                                }
+                              },
+                              label: 'Cadastrar',
+                              labelWidget: state.isLoading
+                                  ? const CircularProgressIndicator(
+                                      color: AppColors.white,
+                                    )
+                                  : null,
                             ),
                           ),
                         ],

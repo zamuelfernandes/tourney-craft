@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:tourney_craft/app/modules/complete_tourney/widgets/data_table_widget.dart';
+import 'package:tourney_craft/app/shared/components/base_elevated_button.dart';
 
 import '../../../shared/components/base_app_bar.dart';
 import '../../../shared/components/base_bottom_message.dart';
@@ -138,34 +139,26 @@ class _MatchesManagePageState extends State<MatchesManagePage> {
                   ),
                 ),
                 const SizedBox(height: 25),
-                SizedBox(
-                  width: sizeOf.width * .55,
-                  height: sizeOf.height * .08,
-                  child: ElevatedButton(
-                    onPressed: () async {
-                      // print(state.groupsList
-                      //     .map((e) => e.map((e) => e.playerName)));
+                BaseElevatedButton(
+                  onPressed: () async {
+                    // print(state.groupsList
+                    //     .map((e) => e.map((e) => e.playerName)));
 
-                      // print(state.groupsList[selectedGroup - 1]
-                      //     .map((e) => e.playerName));
+                    // print(state.groupsList[selectedGroup - 1]
+                    //     .map((e) => e.playerName));
 
-                      final result = await widget.cubit.registerMatches();
+                    final result = await widget.cubit.registerMatches();
 
-                      BaseBottomMessage.showMessage(
-                        context,
-                        result,
-                        AppColors.secondaryBlack,
-                      );
-                    },
-                    child: Padding(
-                      padding: const EdgeInsets.all(12),
-                      child: Text(
-                        'Confirmar Chaveamento'.toUpperCase(),
-                        textAlign: TextAlign.center,
-                      ),
-                    ),
-                  ),
+                    BaseBottomMessage.showMessage(
+                      context,
+                      result,
+                      AppColors.secondaryBlack,
+                    );
+                  },
+                  label: 'Confirmar Chaveamento',
                 ),
+
+                const SizedBox(height: 50),
               ],
             ),
           );

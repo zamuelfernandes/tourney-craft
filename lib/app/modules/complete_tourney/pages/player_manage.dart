@@ -43,35 +43,38 @@ class _PlayerManagePageState extends State<PlayerManagePage> {
             child: Column(
               children: [
                 SizedBox(
-                  height: sizeOf.height * 0.1,
+                  height: sizeOf.height * 0.05,
                   child: Center(
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Text(
-                          'Finalizar cadastro\nde Jogadores'.toUpperCase(),
-                          textAlign: TextAlign.center,
-                          style: TextStyle(
-                            fontSize: 14,
-                            fontWeight: FontWeight.bold,
-                            height: 1,
-                          ),
-                        ),
-                      ],
+                    child: Text(
+                      'Finalizar cadastro\nde Jogadores'.toUpperCase(),
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                        fontSize: 14,
+                        fontWeight: FontWeight.bold,
+                        height: 1,
+                      ),
                     ),
                   ),
                 ),
                 Padding(
                   padding: const EdgeInsets.all(15),
                   child: SizedBox(
-                    height: sizeOf.height * 0.7,
+                    height: sizeOf.height * 0.8,
                     child: state.isLoading
                         ? Center(child: CircularProgressIndicator())
                         : ListView.builder(
                             itemCount: playersList.length,
                             itemBuilder: (context, index) {
                               return Card(
+                                elevation: 2,
                                 child: ListTile(
+                                  onTap: () {
+                                    BaseBottomMessage.showMessage(
+                                      context,
+                                      'Ainda não implementado',
+                                      AppColors.secondaryBlack,
+                                    );
+                                  },
                                   leading: CircleAvatar(
                                     child: Text(
                                       playersList[index].playerName[0],
@@ -87,15 +90,19 @@ class _PlayerManagePageState extends State<PlayerManagePage> {
                                     style: AppTextStyle.subtitleStyle
                                         .copyWith(fontSize: 14),
                                   ),
-                                  trailing: IconButton(
-                                    icon: Icon(Icons.delete),
-                                    onPressed: () {
-                                      BaseBottomMessage.showMessage(
-                                        context,
-                                        'Ainda não implementado',
-                                        AppColors.secondaryBlack,
-                                      );
-                                    },
+                                  trailing: Card(
+                                    surfaceTintColor: AppColors.white,
+                                    elevation: 2,
+                                    child: IconButton(
+                                      icon: Icon(Icons.delete),
+                                      onPressed: () {
+                                        BaseBottomMessage.showMessage(
+                                          context,
+                                          'Ainda não implementado',
+                                          AppColors.secondaryBlack,
+                                        );
+                                      },
+                                    ),
                                   ),
                                 ),
                               );
@@ -112,7 +119,7 @@ class _PlayerManagePageState extends State<PlayerManagePage> {
         onPressed: () {
           widget.cubit.registerPlayerDialog(context);
         },
-        label: Text('Add Player'),
+        label: Text('Add Jogador'),
         icon: Icon(Icons.add),
         backgroundColor: AppColors.secondaryBlack,
       ),

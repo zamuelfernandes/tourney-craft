@@ -6,6 +6,7 @@ import 'package:tourney_craft/app/modules/complete_tourney/pages/matches_manage.
 import 'package:tourney_craft/app/modules/complete_tourney/pages/player_manage.dart';
 import 'package:tourney_craft/app/modules/complete_tourney/widgets/switches_widgets.dart';
 import 'package:tourney_craft/app/shared/components/base_bottom_message.dart';
+import 'package:tourney_craft/app/shared/components/base_elevated_button.dart';
 import 'package:tourney_craft/app/shared/constants/routes.dart';
 import 'package:tourney_craft/app/shared/services/tourney_repository.dart';
 import 'package:tourney_craft/app/shared/themes/themes.dart';
@@ -188,135 +189,94 @@ class _CompleteTourneyPageState extends State<CompleteTourneyPage> {
                             ),
                           ),
                           SizedBox(height: sizeOf.height * .03),
-                          SizedBox(
-                            width: sizeOf.width * .55,
-                            height: sizeOf.height * .08,
-                            child: ElevatedButton(
-                              onPressed: () {
-                                if (state.groupQuant < 1) {
-                                  BaseBottomMessage.showMessage(
-                                    context,
-                                    'Informe antes\na quantidade de grupos',
-                                    AppColors.secondaryBlack,
-                                  );
-                                } else {
-                                  final groupsQuant = List<int>.generate(
-                                    state.groupQuant,
-                                    (index) => index + 1,
-                                  );
-
-                                  Navigator.of(context).push(MaterialPageRoute(
-                                    builder: (context) => GroupManagePage(
-                                      cubit: _cubit,
-                                      groups: groupsQuant,
-                                      selectedGroup: groupsQuant.first,
-                                      playersList: tourney.players,
-                                    ),
-                                  ));
-                                }
-                              },
-                              child: Padding(
-                                padding: const EdgeInsets.all(12),
-                                child: Text(
-                                  'Organizar Grupos'.toUpperCase(),
-                                  textAlign: TextAlign.center,
-                                ),
-                              ),
-                            ),
-                          ),
-                          const SizedBox(height: 20),
-                          SizedBox(
-                            width: sizeOf.width * .55,
-                            height: sizeOf.height * .08,
-                            child: ElevatedButton(
-                              onPressed: () {
-                                Navigator.of(context).push(MaterialPageRoute(
-                                  builder: (context) => PlayerManagePage(
-                                    cubit: _cubit,
-                                  ),
-                                ));
-                              },
-                              child: Padding(
-                                padding: const EdgeInsets.all(12),
-                                child: Text(
-                                  'Gerenciar Jogadores'.toUpperCase(),
-                                  textAlign: TextAlign.center,
-                                ),
-                              ),
-                            ),
-                          ),
-                          const SizedBox(height: 20),
-                          SizedBox(
-                            width: sizeOf.width * .55,
-                            height: sizeOf.height * .08,
-                            child: ElevatedButton(
-                              onPressed: () {
+                          BaseElevatedButton(
+                            onPressed: () {
+                              if (state.groupQuant < 1) {
+                                BaseBottomMessage.showMessage(
+                                  context,
+                                  'Informe antes\na quantidade de grupos',
+                                  AppColors.secondaryBlack,
+                                );
+                              } else {
                                 final groupsQuant = List<int>.generate(
                                   state.groupQuant,
                                   (index) => index + 1,
                                 );
 
                                 Navigator.of(context).push(MaterialPageRoute(
-                                  builder: (context) => MatchesManagePage(
+                                  builder: (context) => GroupManagePage(
                                     cubit: _cubit,
                                     groups: groupsQuant,
                                     selectedGroup: groupsQuant.first,
+                                    playersList: tourney.players,
                                   ),
                                 ));
-                              },
-                              child: Padding(
-                                padding: const EdgeInsets.all(12),
-                                child: Text(
-                                  'Ver Tabelamento'.toUpperCase(),
-                                  textAlign: TextAlign.center,
-                                ),
-                              ),
-                            ),
+                              }
+                            },
+                            label: 'Organizar Grupos',
                           ),
                           const SizedBox(height: 20),
-                          SizedBox(
-                            width: sizeOf.width * .55,
-                            height: sizeOf.height * .08,
-                            child: ElevatedButton(
-                              onPressed: () {
-                                if (!_cubit.allReady()) {
-                                  BaseBottomMessage.showMessage(
-                                    context,
-                                    'Configurações Faltantes',
-                                    AppColors.secondaryBlack,
-                                  );
-                                } else {
-                                  // _cubit.updateTourneyStatus(
-                                  //   tourneyId: tourney.tourneyId,
-                                  //   status: 1,
-                                  // );
-                                  BaseBottomMessage.showMessage(
-                                    context,
-                                    'Tudo Certo',
-                                    AppColors.secondaryBlack,
-                                  );
-                                }
-                              },
-                              child: Padding(
-                                padding: const EdgeInsets.all(12),
-                                child: Text(
-                                  'Iniciar Torneio'.toUpperCase(),
-                                  textAlign: TextAlign.center,
+                          BaseElevatedButton(
+                            onPressed: () {
+                              Navigator.of(context).push(MaterialPageRoute(
+                                builder: (context) => PlayerManagePage(
+                                  cubit: _cubit,
                                 ),
-                              ),
-                              style: ButtonStyle(
-                                backgroundColor: MaterialStateProperty.all(
-                                  AppColors.checkColor,
+                              ));
+                            },
+                            label: 'Gerenciar Jogadores',
+                          ),
+                          const SizedBox(height: 20),
+                          BaseElevatedButton(
+                            onPressed: () {
+                              final groupsQuant = List<int>.generate(
+                                state.groupQuant,
+                                (index) => index + 1,
+                              );
+
+                              Navigator.of(context).push(MaterialPageRoute(
+                                builder: (context) => MatchesManagePage(
+                                  cubit: _cubit,
+                                  groups: groupsQuant,
+                                  selectedGroup: groupsQuant.first,
                                 ),
-                              ),
-                            ),
+                              ));
+                            },
+                            label: 'Ver Tabelamento',
+                          ),
+                          const SizedBox(height: 20),
+                          BaseElevatedButton(
+                            onPressed: () {
+                              if (!_cubit.allReady()) {
+                                BaseBottomMessage.showMessage(
+                                  context,
+                                  'Configurações Faltantes',
+                                  AppColors.secondaryBlack,
+                                );
+                              } else {
+                                // _cubit.updateTourneyStatus(
+                                //   tourneyId: tourney.tourneyId,
+                                //   status: 1,
+                                // );
+                                BaseBottomMessage.showMessage(
+                                  context,
+                                  'Tudo Certo',
+                                  AppColors.secondaryBlack,
+                                );
+                              }
+                            },
+                            label: 'Iniciar Torneio',
+                            color: AppColors.checkColor,
                           ),
                         ],
                       ),
                       SizedBox(
-                        height: sizeOf.height * 0.05,
+                        height: sizeOf.height * 0.08,
+                        child: Align(
+                          alignment: AlignmentDirectional.bottomCenter,
+                          child: Text('Tourney Craft © 2024'),
+                        ),
                       ),
-                      Text('Tourney Craft © 2024'),
                     ],
                   ),
                 ),

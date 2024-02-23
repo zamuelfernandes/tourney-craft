@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:tourney_craft/app/modules/initial/cubit/initial_cubit.dart';
+import 'package:tourney_craft/app/shared/components/base_elevated_button.dart';
 
 import '../../shared/components/base_app_bar.dart';
 import '../../shared/themes/themes.dart';
@@ -65,47 +66,30 @@ class _InitialPageState extends State<InitialPage> {
               ),
               SizedBox(height: sizeOf.height * .1),
               Hero(
-                tag: 'playTourney',
-                child: SizedBox(
-                  width: sizeOf.width * .55,
-                  height: sizeOf.height * .08,
-                  child: ElevatedButton(
-                    onPressed: () {
-                      Navigator.of(context).push(MaterialPageRoute(
-                        builder: (context) => PlayTourneyPage(
-                          cubit: _cubit,
-                        ),
-                      ));
-                    },
-                    child: Padding(
-                      padding: const EdgeInsets.all(12),
-                      child: Text(
-                        'Cadastrar no Torneio'.toUpperCase(),
-                        textAlign: TextAlign.center,
+                tag: 'createTourney',
+                child: BaseElevatedButton(
+                  onPressed: () {
+                    Navigator.of(context).push(MaterialPageRoute(
+                      builder: (context) => CreateTourneyPage(
+                        cubit: _cubit,
                       ),
-                    ),
-                  ),
+                    ));
+                  },
+                  label: 'Criar Torneio',
                 ),
               ),
               const SizedBox(height: 30),
               Hero(
-                tag: 'createTourney',
-                child: SizedBox(
-                  width: sizeOf.width * .55,
-                  height: sizeOf.height * .08,
-                  child: ElevatedButton(
-                    onPressed: () {
-                      Navigator.of(context).push(MaterialPageRoute(
-                        builder: (context) => CreateTourneyPage(
-                          cubit: _cubit,
-                        ),
-                      ));
-                    },
-                    child: Padding(
-                      padding: const EdgeInsets.all(12),
-                      child: Text('Criar Torneio'.toUpperCase()),
-                    ),
-                  ),
+                tag: 'playTourney',
+                child: BaseElevatedButton(
+                  onPressed: () {
+                    Navigator.of(context).push(MaterialPageRoute(
+                      builder: (context) => PlayTourneyPage(
+                        cubit: _cubit,
+                      ),
+                    ));
+                  },
+                  label: 'Cadastrar no Torneio',
                 ),
               ),
               const SizedBox(height: 80),

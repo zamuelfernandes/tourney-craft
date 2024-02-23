@@ -5,6 +5,7 @@ import 'package:tourney_craft/app/modules/initial/cubit/initial_cubit.dart';
 import 'package:tourney_craft/app/modules/initial/cubit/initial_state.dart';
 import 'package:tourney_craft/app/shared/components/base_app_bar.dart';
 import 'package:tourney_craft/app/shared/components/base_bottom_message.dart';
+import 'package:tourney_craft/app/shared/components/base_elevated_button.dart';
 import 'package:tourney_craft/app/shared/themes/themes.dart';
 import 'package:validatorless/validatorless.dart';
 
@@ -136,48 +137,42 @@ class _CreateTourneyPageState extends State<CreateTourneyPage> {
                         const SizedBox(height: 40),
                         Hero(
                           tag: 'createTourney',
-                          child: SizedBox(
-                            width: sizeOf.width * .55,
-                            height: sizeOf.height * .08,
-                            child: ElevatedButton(
-                              onPressed: () async {
-                                final valid =
-                                    formKey.currentState?.validate() ?? false;
+                          child: BaseElevatedButton(
+                            onPressed: () async {
+                              final valid =
+                                  formKey.currentState?.validate() ?? false;
 
-                                if (valid) {
-                                  if (int.parse(playersNumberEC.text) < 4) {
-                                    BaseBottomMessage.showMessage(
-                                      context,
-                                      'O número mínimo de jogadores é 8!',
-                                      AppColors.secondaryBlack,
-                                    );
-                                  } else {
-                                    final result =
-                                        await widget.cubit.createTourney(
-                                      tourneyName: tourneyNameEC.text,
-                                      playersNumber:
-                                          int.parse(playersNumberEC.text),
-                                      adminPassword:
-                                          int.parse(adminPasswordEC.text),
-                                    );
+                              if (valid) {
+                                if (int.parse(playersNumberEC.text) < 4) {
+                                  BaseBottomMessage.showMessage(
+                                    context,
+                                    'O número mínimo de jogadores é 8!',
+                                    AppColors.secondaryBlack,
+                                  );
+                                } else {
+                                  final result =
+                                      await widget.cubit.createTourney(
+                                    tourneyName: tourneyNameEC.text,
+                                    playersNumber:
+                                        int.parse(playersNumberEC.text),
+                                    adminPassword:
+                                        int.parse(adminPasswordEC.text),
+                                  );
 
-                                    BaseBottomMessage.showMessage(
-                                      context,
-                                      result,
-                                      AppColors.secondaryBlack,
-                                    );
-                                  }
+                                  BaseBottomMessage.showMessage(
+                                    context,
+                                    result,
+                                    AppColors.secondaryBlack,
+                                  );
                                 }
-                              },
-                              child: Padding(
-                                padding: const EdgeInsets.all(12),
-                                child: state.isLoading
-                                    ? const CircularProgressIndicator(
-                                        color: AppColors.white,
-                                      )
-                                    : Text('Criar'.toUpperCase()),
-                              ),
-                            ),
+                              }
+                            },
+                            label: 'Criar',
+                            labelWidget: state.isLoading
+                                ? const CircularProgressIndicator(
+                                    color: AppColors.white,
+                                  )
+                                : null,
                           ),
                         ),
                         state.tourneyId.isNotEmpty

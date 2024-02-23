@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:tourney_craft/app/modules/complete_tourney/widgets/group_widget.dart';
 import 'package:tourney_craft/app/shared/components/base_app_bar.dart';
+import 'package:tourney_craft/app/shared/components/base_elevated_button.dart';
 import 'package:tourney_craft/app/shared/themes/themes.dart';
 
 import '../../../shared/components/base_bottom_message.dart';
@@ -53,92 +54,91 @@ class _GroupManagePageState extends State<GroupManagePage> {
           }
         },
         builder: (context, state) {
-          return Column(
-            children: [
-              const SizedBox(height: 15),
-              Card(
-                elevation: 5,
-                surfaceTintColor: AppColors.white,
-                child: Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: DropdownButton<int>(
-                    underline: const SizedBox(),
-                    borderRadius: BorderRadius.circular(5),
-                    value: selectedGroup,
-                    items: widget.groups.map((int group) {
-                      return DropdownMenuItem<int>(
-                        value: group,
-                        child: Text('Grupo $group'),
-                      );
-                    }).toList(),
-                    onChanged: (int? value) {
-                      if (value != null) {
-                        setState(() {
-                          selectedGroup = value;
-                        });
-                      }
-                    },
-                  ),
-                ),
-              ),
-              const SizedBox(height: 15),
-              Container(
-                height: sizeOf.height * 0.6,
-                margin: EdgeInsets.symmetric(horizontal: 15),
-                decoration: BoxDecoration(
-                  border: Border.all(
-                    color: AppColors.secondaryBlack,
-                    width: 2,
-                  ),
-                  borderRadius: BorderRadius.circular(15),
-                  color: Colors.white,
-                  boxShadow: [
-                    BoxShadow(
-                      color: AppColors.black.withOpacity(.2),
-                      blurRadius: 8,
-                      spreadRadius: 5,
+          return SingleChildScrollView(
+            child: Column(
+              children: [
+                const SizedBox(height: 15),
+                Card(
+                  elevation: 5,
+                  surfaceTintColor: AppColors.white,
+                  child: Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: DropdownButton<int>(
+                      underline: const SizedBox(),
+                      borderRadius: BorderRadius.circular(5),
+                      value: selectedGroup,
+                      items: widget.groups.map((int group) {
+                        return DropdownMenuItem<int>(
+                          value: group,
+                          child: Text('Grupo $group'),
+                        );
+                      }).toList(),
+                      onChanged: (int? value) {
+                        if (value != null) {
+                          setState(() {
+                            selectedGroup = value;
+                          });
+                        }
+                      },
                     ),
-                  ],
+                  ),
                 ),
-                child: state.isLoading
-                    ? const Center(child: CircularProgressIndicator())
-                    : GroupWidget(
-                        playersList: state.groupsList[selectedGroup - 1],
-                        onAddPlayer: () {
-                          List<PlayerModel> avaliablePlayers =
-                              widget.playersList
-                                  .where(
-                                    (player) => !state.groupsList.any((group) {
-                                      for (var p in group) {
-                                        if (p.id == player.id) {
-                                          return true;
-                                        }
-                                      }
-                                      return false;
-                                    }),
-                                  )
-                                  .toList();
-
-                          widget.cubit.addPlayersToGroupDialog(
-                            context,
-                            avaliablePlayers: avaliablePlayers,
-                            selectedGroup: selectedGroup,
-                          );
-                        },
-                        onTapRemove: () {
-                          widget.cubit.removePlayer(
-                            context,
-                            players: state.groupsList[selectedGroup - 1],
-                            selectedGroup: selectedGroup,
-                          );
-                        },
+                const SizedBox(height: 15),
+                Container(
+                  height: sizeOf.height * 0.6,
+                  margin: EdgeInsets.symmetric(horizontal: 15),
+                  decoration: BoxDecoration(
+                    border: Border.all(
+                      color: AppColors.secondaryBlack,
+                      width: 2,
+                    ),
+                    borderRadius: BorderRadius.circular(15),
+                    color: Colors.white,
+                    boxShadow: [
+                      BoxShadow(
+                        color: AppColors.black.withOpacity(.2),
+                        blurRadius: 8,
+                        spreadRadius: 5,
                       ),
-              ),
-              const SizedBox(height: 25),
-              SizedBox(
-                width: sizeOf.width * .55,
-                height: sizeOf.height * .08,
-                child: ElevatedButton(
+                    ],
+                  ),
+                  child: state.isLoading
+                      ? const Center(child: CircularProgressIndicator())
+                      : GroupWidget(
+                          playersList: state.groupsList[selectedGroup - 1],
+                          onAddPlayer: () {
+                            List<PlayerModel> avaliablePlayers =
+                                widget.playersList
+                                    .where(
+                                      (player) =>
+                                          !state.groupsList.any((group) {
+                                        for (var p in group) {
+                                          if (p.id == player.id) {
+                                            return true;
+                                          }
+                                        }
+                                        return false;
+                                      }),
+                                    )
+                                    .toList();
+
+                            widget.cubit.addPlayersToGroupDialog(
+                              context,
+                              avaliablePlayers: avaliablePlayers,
+                              selectedGroup: selectedGroup,
+                            );
+                          },
+                          onTapRemove: () {
+                            widget.cubit.removePlayer(
+                              context,
+                              players: state.groupsList[selectedGroup - 1],
+                              selectedGroup: selectedGroup,
+                            );
+                          },
+                        ),
+                ),
+                const SizedBox(height: 25),
+                BaseElevatedButton(
                   onPressed: () async {
                     print(state.groupsList
                         .map((e) => e.map((e) => e.playerName)));
@@ -153,16 +153,11 @@ class _GroupManagePageState extends State<GroupManagePage> {
                       AppColors.secondaryBlack,
                     );
                   },
-                  child: Padding(
-                    padding: const EdgeInsets.all(12),
-                    child: Text(
-                      'Confirmar Grupos'.toUpperCase(),
-                      textAlign: TextAlign.center,
-                    ),
-                  ),
+                  label: 'Confirmar Grupos',
                 ),
-              ),
-            ],
+                const SizedBox(height: 50),
+              ],
+            ),
           );
         },
       ),

@@ -5,6 +5,7 @@ import 'package:tourney_craft/app/modules/initial/cubit/initial_cubit.dart';
 import 'package:tourney_craft/app/modules/initial/cubit/initial_state.dart';
 import 'package:tourney_craft/app/shared/components/base_app_bar.dart';
 import 'package:tourney_craft/app/shared/components/base_bottom_message.dart';
+import 'package:tourney_craft/app/shared/components/base_dialog.dart';
 import 'package:tourney_craft/app/shared/components/base_elevated_button.dart';
 import 'package:tourney_craft/app/shared/themes/themes.dart';
 import 'package:validatorless/validatorless.dart';
@@ -159,11 +160,25 @@ class _CreateTourneyPageState extends State<CreateTourneyPage> {
                                         int.parse(adminPasswordEC.text),
                                   );
 
-                                  BaseBottomMessage.showMessage(
-                                    context,
-                                    result,
-                                    AppColors.secondaryBlack,
-                                  );
+                                  state.tourneyId.isNotEmpty
+                                      ? BaseDialog.show(
+                                          context,
+                                          result,
+                                          'ID da Competição:\n${state.tourneyId}',
+                                          [
+                                            TextButton(
+                                              onPressed: () {
+                                                Clipboard.setData(ClipboardData(
+                                                  text: state.tourneyId,
+                                                ));
+                                                Navigator.pop(context);
+                                              },
+                                              child:
+                                                  const Text('Copiar e Sair'),
+                                            ),
+                                          ],
+                                        )
+                                      : null;
                                 }
                               }
                             },
@@ -175,9 +190,7 @@ class _CreateTourneyPageState extends State<CreateTourneyPage> {
                                 : null,
                           ),
                         ),
-                        state.tourneyId.isNotEmpty
-                            ? SelectableText('ID: ${state.tourneyId}')
-                            : SizedBox(),
+                        const SizedBox(height: 50),
                       ],
                     ),
                   ),
